@@ -288,15 +288,17 @@
   }
 
   @keyframes gentleFloatMobile {
-    0%,100% { transform: translate(-50%, 0px); }
-    50%     { transform: translate(-50%, -8px); }
+    0%,100% { transform: translate(-50%, -50%); }
+    50%     { transform: translate(-50%, calc(-50% - 8px)); }
   }
 
-  /* Image: fill the screen width, auto height */
+  /* Image: constrained so it never overflows the mobile screen */
   .splash-plane-img {
-    width: 94vw;
-    max-height: none;
+    width: 88vw;
+    max-width: 380px;
+    max-height: 44vh;
     height: auto;
+    object-fit: contain;
   }
 
   /* Tagline sits below the absolute plane —
