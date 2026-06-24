@@ -2,25 +2,29 @@ import React, { useEffect, useState } from 'react';
 import './SplashScreen.css';
 
 const SplashScreen = ({ onFinish }) => {
-  const [phase, setPhase] = useState('fly-in'); // 'fly-in' | 'hold' | 'fade-out'
+  // Start as 'idle' so the browser paints the element off-screen first.
+  // Then we add 'fly-in' after 50 ms — that class *change* is what
+  // triggers the CSS animation. Without this delay the animation was
+  // already present on the first paint and never fired on mobile.
+  const [phase, setPhase] = useState('idle'); // 'idle' | 'fly-in' | 'hold' | 'fade-out'
 
   useEffect(() => {
-    // Phase 1: Fly in from left → center (1.4s)
-    const holdTimer = setTimeout(() => {
-      setPhase('hold');
-    }, 1400);
+    // Tiny delay → browser paints element off-screen, then class change fires animation
+    const startTimer = setTimeout(() => setPhase('fly-in'), 50);
+
+    // Phase 1: Fly in from left → center (1.4s + 50ms offset)
+    const holdTimer = setTimeout(() => setPhase('hold'), 1450);
 
     // Phase 2: Hold at center (1.2s pause after landing)
-    const fadeTimer = setTimeout(() => {
-      setPhase('fade-out');
-    }, 2600);
+    const fadeTimer = setTimeout(() => setPhase('fade-out'), 2650);
 
     // Phase 3: Fade out overlay → reveal site (0.6s)
     const doneTimer = setTimeout(() => {
       if (onFinish) onFinish();
-    }, 3200);
+    }, 3250);
 
     return () => {
+      clearTimeout(startTimer);
       clearTimeout(holdTimer);
       clearTimeout(fadeTimer);
       clearTimeout(doneTimer);
@@ -39,7 +43,10 @@ const SplashScreen = ({ onFinish }) => {
       <div className="cloud cloud-4" />
 
       {/* The airplane + banner image */}
-      <div className={`splash-plane-wrap ${phase === 'fly-in' ? 'fly-in' : 'plane-center'}`}>
+      <div className={`splash-plane-wrap ${
+        phase === 'fly-in' ? 'fly-in' :
+        phase === 'hold' || phase === 'fade-out' ? 'plane-center' : ''
+      }`}>
         <img
           src="/tripatee-logo.png"
           alt="Welcome to Tripatee Travels"
