@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { FiMail, FiLock, FiInfo } from 'react-icons/fi';
+import { FiMail, FiLock } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {
@@ -114,12 +114,7 @@ const Login = () => {
           </Link>
         </p>
 
-        {/* Demo credentials tip */}
-        <div className="mt-8 border-t border-gray-50 pt-5 text-[10px] text-gray-400 leading-relaxed font-semibold">
-          <p className="text-gray-500 font-bold uppercase tracking-wider text-[9px] mb-1">Demo Credentials:</p>
-          <p>Admin: <span className="text-gray-600">admin@tripatee.com</span> / <span className="text-gray-600">password123</span></p>
-          <p>User: <span className="text-gray-600">user@tripatee.com</span> / <span className="text-gray-600">password123</span></p>
-        </div>
+
       </div>
     </div>
   );
