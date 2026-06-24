@@ -1,0 +1,355 @@
+/* ============================================================
+   SPLASH SCREEN — Airplane flies from left → center, then fades
+   ============================================================ */
+
+/* Full-viewport overlay */
+.splash-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+  transition: opacity 0.7s ease-out;
+}
+
+.splash-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Sky background ── */
+.splash-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    #1565c0 0%,
+    #1e88e5 35%,
+    #42a5f5 65%,
+    #90caf9 88%,
+    #e3f2fd 100%
+  );
+  z-index: 0;
+}
+
+/* Sun glow in top-right */
+.splash-bg::after {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 236, 130, 0.45) 0%, transparent 70%);
+}
+
+/* ══════════════════════════════════════════
+   REALISTIC FLUFFY CLOUDS — pure CSS
+   Each cloud uses multiple pseudo-elements
+   and box-shadows to get that puffy shape
+   ══════════════════════════════════════════ */
+
+.cloud {
+  position: absolute;
+  z-index: 1;
+}
+
+/* ── Cloud 1 — large, top-left area ── */
+.cloud-1 {
+  top: 10%;
+  left: -420px;
+  width: 200px;
+  height: 60px;
+  background: #fff;
+  border-radius: 50px;
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.08);
+  animation: cloudDrift1 9s 0s linear forwards;
+}
+.cloud-1::before {
+  content: '';
+  position: absolute;
+  top: -38px;
+  left: 28px;
+  width: 100px;
+  height: 90px;
+  background: #fff;
+  border-radius: 50%;
+}
+.cloud-1::after {
+  content: '';
+  position: absolute;
+  top: -22px;
+  left: 88px;
+  width: 70px;
+  height: 70px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+/* ── Cloud 2 — medium, upper-right ── */
+.cloud-2 {
+  top: 18%;
+  right: -360px;
+  width: 160px;
+  height: 50px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 50px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.07);
+  animation: cloudDriftRight2 11s 0.4s linear forwards;
+}
+.cloud-2::before {
+  content: '';
+  position: absolute;
+  top: -32px;
+  left: 20px;
+  width: 80px;
+  height: 75px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 50%;
+}
+.cloud-2::after {
+  content: '';
+  position: absolute;
+  top: -18px;
+  left: 75px;
+  width: 55px;
+  height: 55px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 50%;
+}
+
+/* ── Cloud 3 — small, bottom-left ── */
+.cloud-3 {
+  bottom: 20%;
+  left: -300px;
+  width: 130px;
+  height: 40px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 40px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  animation: cloudDrift1 13s 0.8s linear forwards;
+}
+.cloud-3::before {
+  content: '';
+  position: absolute;
+  top: -26px;
+  left: 18px;
+  width: 65px;
+  height: 62px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+}
+.cloud-3::after {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: 60px;
+  width: 46px;
+  height: 46px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 50%;
+}
+
+/* ── Cloud 4 — large, bottom-right ── */
+.cloud-4 {
+  bottom: 12%;
+  right: -400px;
+  width: 220px;
+  height: 65px;
+  background: #fff;
+  border-radius: 55px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+  animation: cloudDriftRight2 15s 0.2s linear forwards;
+}
+.cloud-4::before {
+  content: '';
+  position: absolute;
+  top: -42px;
+  left: 32px;
+  width: 110px;
+  height: 95px;
+  background: #fff;
+  border-radius: 50%;
+}
+.cloud-4::after {
+  content: '';
+  position: absolute;
+  top: -26px;
+  left: 105px;
+  width: 78px;
+  height: 75px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+@keyframes cloudDrift1 {
+  0%   { left: -420px; }
+  100% { left: 110%; }
+}
+@keyframes cloudDriftRight2 {
+  0%   { right: -420px; }
+  100% { right: 110%; }
+}
+
+/* ══════════════════════════════════════════
+   PLANE
+   ══════════════════════════════════════════ */
+
+.splash-plane-wrap {
+  position: relative;
+  z-index: 2;
+  transform: translateX(-140vw);
+}
+
+/* Fly-in phase */
+.splash-plane-wrap.fly-in {
+  animation: flyInFromLeft 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Hold / float at center */
+.splash-plane-wrap.plane-center {
+  transform: translateX(0) scale(1);
+  animation: gentleFloat 3s ease-in-out infinite;
+}
+
+@keyframes flyInFromLeft {
+  0% {
+    transform: translateX(-140vw) scale(0.75);
+    opacity: 0.6;
+  }
+  65% {
+    transform: translateX(4vw) scale(1.05);
+    opacity: 1;
+  }
+  82% {
+    transform: translateX(-1vw) scale(1.02);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50%       { transform: translateY(-10px) scale(1); }
+}
+
+/* ── Airplane image — BIG ── */
+.splash-plane-img {
+  width: clamp(300px, 90vw, 1000px);
+  max-height: 55vh;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 16px 50px rgba(0, 0, 0, 0.30))
+    drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════
+   MOBILE — absolute centering so the wide
+   image (banner + plane) always fits fully
+   ══════════════════════════════════════════ */
+@media (max-width: 600px) {
+
+  /* Switch to absolute so we can use
+     translate(-50%,-50%) for true centering */
+  .splash-plane-wrap {
+    position: absolute !important;
+    left: 50%;
+    top: 50%;
+    /* start off-screen; overridden by animation */
+    transform: translate(-150vw, -50%);
+  }
+
+  /* Mobile fly-in: keep -50% Y so image stays
+     vertically centred throughout */
+  .splash-plane-wrap.fly-in {
+    animation: flyInMobile 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Landed: image is fully centred + floats */
+  .splash-plane-wrap.plane-center {
+    transform: translate(-50%, -50%);
+    animation: gentleFloatMobile 3s ease-in-out infinite;
+  }
+
+  @keyframes flyInMobile {
+    0%   { transform: translate(-150vw, -50%) scale(0.8);  opacity: 0.7; }
+    65%  { transform: translate(calc(-50% + 10px), -50%) scale(1.04); opacity: 1; }
+    82%  { transform: translate(calc(-50% - 4px), -50%) scale(1.01); }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  }
+
+  @keyframes gentleFloatMobile {
+    0%,100% { transform: translate(-50%, 0px); }
+    50%     { transform: translate(-50%, -8px); }
+  }
+
+  /* Image: fill the screen width, auto height */
+  .splash-plane-img {
+    width: 94vw;
+    max-height: none;
+    height: auto;
+  }
+
+  /* Tagline sits below the absolute plane —
+     push it down from screen centre */
+  .splash-tagline {
+    position: absolute;
+    top: calc(50% + 28vw + 18px);
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    white-space: nowrap;
+    font-size: 0.9rem;
+    margin-top: 0;
+  }
+  .splash-tagline.tagline-visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* Scale down clouds for narrow screens */
+  .cloud-1 { width: 120px; height: 36px; }
+  .cloud-1::before { width: 60px; height: 56px; top: -22px; left: 16px; }
+  .cloud-1::after  { width: 42px; height: 42px; top: -12px; left: 55px; }
+
+  .cloud-2 { width: 95px; height: 30px; }
+  .cloud-2::before { width: 48px; height: 44px; top: -20px; left: 12px; }
+  .cloud-2::after  { width: 36px; height: 36px; top: -11px; left: 44px; }
+
+  .cloud-3 { width: 85px; height: 26px; }
+  .cloud-3::before { width: 42px; height: 40px; top: -16px; left: 10px; }
+  .cloud-3::after  { width: 30px; height: 30px; top: -9px;  left: 38px; }
+
+  .cloud-4 { width: 130px; height: 40px; }
+  .cloud-4::before { width: 66px; height: 60px; top: -26px; left: 18px; }
+  .cloud-4::after  { width: 48px; height: 48px; top: -14px; left: 62px; }
+}
+
+/* ── Tagline ── */
+.splash-tagline {
+  position: relative;
+  z-index: 2;
+  margin-top: 24px;
+  font-family: 'Outfit', 'Inter', sans-serif;
+  font-size: clamp(1rem, 2.4vw, 1.45rem);
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.1em;
+  text-shadow: 0 2px 16px rgba(0, 50, 120, 0.5);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s;
+}
+
+.splash-tagline.tagline-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
