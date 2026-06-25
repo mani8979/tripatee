@@ -38,7 +38,7 @@ export const createBooking = async (req, res, next) => {
     });
 
     // Send email notification to user
-    const emailMessage = `Hello ${req.user.name},\n\nYour booking for the package "${tourPackage.title}" has been successfully created. We have received your order!\n\nBooking Details:\n- Package: ${tourPackage.title}\n- Travelers: ${travelersCount}\n- Date: ${new Date(bookingDate).toLocaleDateString()}\n- Total Cost: $${totalAmount}\n- Status: Pending Payment\n\nThank you for choosing Tripatee!`;
+    const emailMessage = `Hello ${req.user.name},\n\nYour booking for the package "${tourPackage.title}" has been successfully created. We have received your order!\n\nBooking Details:\n- Package: ${tourPackage.title}\n- Travelers: ${travelersCount}\n- Date: ${new Date(bookingDate).toLocaleDateString()}\n- Total Cost: ₹${totalAmount}\n- Status: Pending Payment\n\nThank you for choosing Tripatee!`;
     
     try {
       await sendEmail({
@@ -65,7 +65,7 @@ export const createBooking = async (req, res, next) => {
               </tr>
               <tr>
                 <td style="padding: 10px; border: 1px solid #eee;"><strong>Total Amount</strong></td>
-                <td style="padding: 10px; border: 1px solid #eee; color: #00C2A8; font-weight: bold;">$${totalAmount}</td>
+                <td style="padding: 10px; border: 1px solid #eee; color: #00C2A8; font-weight: bold;">₹${totalAmount}</td>
               </tr>
               <tr style="background-color: #f8f9fa;">
                 <td style="padding: 10px; border: 1px solid #eee;"><strong>Booking Status</strong></td>

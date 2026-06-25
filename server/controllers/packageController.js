@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Package from '../models/Package.js';
 import Destination from '../models/Destination.js';
 import Review from '../models/Review.js';
@@ -30,9 +31,21 @@ export const getPackages = async (req, res, next) => {
       ];
     }
 
-    // Filter by destination ID
+    // Filter by destination ID or Destination Name
     if (destination) {
-      query.destination = destination;
+      if (mongoose.Types.ObjectId.isValid(destination)) {
+        query.destination = destination;
+      } else {
+        const foundDest = await Destination.findOne({
+          name: { $regex: new RegExp(`^${destination}$`, 'i') }
+        });
+        if (foundDest) {
+          query.destination = foundDest._id;
+        } else {
+          // If no destination is found, set to an impossible ID to return an empty list
+          query.destination = new mongoose.Types.ObjectId();
+        }
+      }
     }
 
     // Filter by price range

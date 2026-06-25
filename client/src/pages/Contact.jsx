@@ -65,7 +65,7 @@ const Contact = () => {
                 <FiMapPin className="text-secondary text-2xl shrink-0 mt-0.5" />
                 <div className="flex flex-col text-sm">
                   <span className="text-gray-400 font-medium">Headquarters</span>
-                  <span className="font-semibold text-white mt-1">100 Luxury Avenue, Suite 500, New York, NY 10001</span>
+                  <span className="font-semibold text-white mt-1">Tripatee Travels, VIP Road, Visakhapatnam, Andhra Pradesh 530003, India</span>
                 </div>
               </div>
 
@@ -73,8 +73,8 @@ const Contact = () => {
                 <FiPhone className="text-secondary text-2xl shrink-0 mt-0.5" />
                 <div className="flex flex-col text-sm">
                   <span className="text-gray-400 font-medium">Telephone Lines</span>
-                  <span className="font-semibold text-white mt-1">+1 (800) 123-4567</span>
-                  <span className="font-semibold text-white">+1 (800) 765-4321</span>
+                  <span className="font-semibold text-white mt-1">+91 (800) 123-4567 (Toll Free)</span>
+                  <span className="font-semibold text-white">+91 98765 43210</span>
                 </div>
               </div>
 
@@ -189,7 +189,7 @@ const Contact = () => {
         {/* 3. MOCK MAP EMBED */}
         <div className="mt-16 bg-white border border-gray-100 rounded-3xl p-4 shadow-sm h-96 overflow-hidden">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.4283824364405!2d-73.98731968459384!3d40.75122497932822!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1655978438183!5m2!1sen!2sus"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d60670.36015525251!2d82.82285193910815!3d18.329158525791244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a3a416b23a9d949%3A0x6a54bd246cb402b4!2sAraku%20Valley%2C%20Andhra%20Pradesh%20531149!5e0!3m2!1sen!2sin!4v1719323456789!5m2!1sen!2sin"
             width="100%"
             height="100%"
             style={{ border: 0, borderRadius: '1.25rem' }}

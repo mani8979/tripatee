@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { FiMail, FiLock } from 'react-icons/fi';
+import { FiMail, FiLock, FiInfo } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 
 const Login = () => {

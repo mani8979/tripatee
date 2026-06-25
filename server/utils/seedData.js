@@ -93,6 +93,30 @@ const seedDB = async () => {
         bannerImage: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=1600&auto=format&fit=crop',
         popular: false,
       },
+      {
+        name: 'United States',
+        country: 'USA',
+        description: 'From the glittering lights of Times Square in New York to the breathtaking depths of the Grand Canyon, the USA offers a journey of iconic experiences.',
+        image: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&auto=format&fit=crop',
+        bannerImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1600&auto=format&fit=crop',
+        popular: true,
+      },
+      {
+        name: 'Australia',
+        country: 'Australia',
+        description: 'Explore the iconic Sydney Opera House, dive into the colorful marine life of the Great Barrier Reef, and wander through ancient tropical rainforests.',
+        image: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&auto=format&fit=crop',
+        bannerImage: 'https://images.unsplash.com/photo-1523482596112-99d81b109867?w=1600&auto=format&fit=crop',
+        popular: true,
+      },
+      {
+        name: 'India',
+        country: 'India',
+        description: 'Immerse yourself in a vibrant kaleidoscope of heritage, from the majestic Taj Mahal in Agra to the royal desert palaces of Rajasthan.',
+        image: 'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&auto=format&fit=crop',
+        bannerImage: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1600&auto=format&fit=crop',
+        popular: true,
+      },
     ]);
 
     console.log('Seed: Created Destinations...');
@@ -102,6 +126,9 @@ const seedDB = async () => {
     const maldivesId = destinations[2]._id;
     const swissId = destinations[3]._id;
     const peruId = destinations[4]._id;
+    const usaId = destinations[5]._id;
+    const ausId = destinations[6]._id;
+    const indId = destinations[7]._id;
 
     // 3. Create Packages
     const packages = await Package.insertMany([
@@ -356,12 +383,201 @@ const seedDB = async () => {
           {
             day: 4,
             title: 'Dead Woman’s Pass to Wiñay Wayna',
-            description: 'Ascend the steep path through Dead Woman’s Pass (4,215m) before descending into lush cloud forests.',
+            description: 'Ascend the steep path through Dead Woman’s Pass (4,215m) before descending into luxury cloud forests.',
           },
           {
             day: 5,
             title: 'Machu Picchu Sun Gate Sunrise',
             description: 'A pre-dawn hike to Inti Punku (Sun Gate) for your first panoramic glimpse of Machu Picchu at sunrise. Return train to Cusco.',
+          },
+        ],
+      },
+      {
+        title: 'American Grandeur: NYC & The Grand Canyon',
+        destination: usaId,
+        description: 'Experience the best of both worlds in America. Walk through Central Park, watch a Broadway show, then fly to Las Vegas and helicopter over the stunning Grand Canyon.',
+        price: 2799,
+        duration: '8 Days / 7 Nights',
+        maxGroupSize: 12,
+        featured: true,
+        inclusions: ['4-star Manhattan hotel stay', 'Grand Canyon helicopter tour', 'Daily breakfast & select dinners', 'Broadway show ticket', 'Internal flight NYC to Las Vegas'],
+        exclusions: ['International flights', 'Personal purchases', 'Visa fees'],
+        availableDates: [
+          new Date('2026-07-20'),
+          new Date('2026-08-15'),
+          new Date('2026-09-10'),
+        ],
+        gallery: [
+          'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1522083165195-3427e0297db4?w=800&auto=format&fit=crop',
+        ],
+        itinerary: [
+          {
+            day: 1,
+            title: 'Arrival in New York City',
+            description: 'Arrive at JFK/Newark Airport. Private transfer to your luxury hotel in Times Square. Enjoy a welcome dinner.',
+          },
+          {
+            day: 2,
+            title: 'Manhattan & Broadway',
+            description: 'Guided tour of Central Park, Fifth Avenue, and Empire State Building. Tonight, experience a premier Broadway show.',
+          },
+          {
+            day: 3,
+            title: 'Statue of Liberty & Soho',
+            description: 'Ferry to the Statue of Liberty and Ellis Island. Afternoon exploring Soho and Greenwich Village boutiques.',
+          },
+          {
+            day: 4,
+            title: 'Fly to Las Vegas',
+            description: 'Morning flight to Las Vegas. Check into your luxury resort on the Strip and experience a night tour.',
+          },
+          {
+            day: 5,
+            title: 'Grand Canyon Helicopter Tour',
+            description: 'Fly in style over the Hoover Dam and land deep inside the Grand Canyon for a Champagne toast.',
+          },
+          {
+            day: 6,
+            title: 'Death Valley or Valley of Fire',
+            description: 'Choose between a day excursion to Death Valley National Park or hiking in the Valley of Fire.',
+          },
+          {
+            day: 7,
+            title: 'Leisure Day in Las Vegas',
+            description: 'Relax at the resort pool, shop at luxury forums, or try your luck at the casinos.',
+          },
+          {
+            day: 8,
+            title: 'Departure',
+            description: 'Transfer to Las Vegas McCarran Airport for your flight home.',
+          },
+        ],
+      },
+      {
+        title: 'Ultimate Australian Discovery',
+        destination: ausId,
+        description: 'Explore Australia’s gems: the iconic Sydney Opera House, Bondi Beach, and the breathtaking Great Barrier Reef, alongside the Daintree Rainforest.',
+        price: 3199,
+        duration: '9 Days / 8 Nights',
+        maxGroupSize: 10,
+        featured: true,
+        inclusions: ['Boutique hotel accommodation', 'Great Barrier Reef catamaran cruise', 'Sydney Harbour private yacht dinner', 'Taronga Zoo entry ticket', 'Domestic flights between Sydney and Cairns'],
+        exclusions: ['International airfare', 'Travel insurance', 'Optional scuba diving fees'],
+        availableDates: [
+          new Date('2026-08-05'),
+          new Date('2026-09-22'),
+          new Date('2026-11-12'),
+        ],
+        gallery: [
+          'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1523482596112-99d81b109867?w=800&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1529142918809-5a507851b68f?w=800&auto=format&fit=crop',
+        ],
+        itinerary: [
+          {
+            day: 1,
+            title: "G'day Sydney",
+            description: 'Arrive at Sydney Kingsford Smith Airport. Transfer to your luxury harbor view hotel and dine at Sydney Tower.',
+          },
+          {
+            day: 2,
+            title: 'Sydney Opera House & Bridge Climb',
+            description: 'VIP tour of the Sydney Opera House. Afternoon walk across the Sydney Harbour Bridge.',
+          },
+          {
+            day: 3,
+            title: 'Bondi Beach & Coastal Walk',
+            description: 'Explore Bondi Beach, learn to surf with a private instructor, and walk the scenic Bondi to Coogee path.',
+          },
+          {
+            day: 4,
+            title: 'Fly to Cairns & Tropical North',
+            description: 'Fly to Cairns, the gateway to the Great Barrier Reef. Settle into your beachfront resort in Port Douglas.',
+          },
+          {
+            day: 5,
+            title: 'Great Barrier Reef Cruise',
+            description: 'Board a luxury sailing catamaran for a day of snorkeling and diving in the outer Great Barrier Reef.',
+          },
+          {
+            day: 6,
+            title: 'Daintree Rainforest & Cape Tribulation',
+            description: 'Discover the oldest continuously surviving tropical rainforest in the world with an indigenous guide.',
+          },
+          {
+            day: 7,
+            title: 'Kuranda Scenic Railway',
+            description: 'Travel via the historic scenic railway and return on the Skyrail Rainforest Cableway above the canopy.',
+          },
+          {
+            day: 8,
+            title: 'Leisure Day in Tropical North',
+            description: 'Relax by the resort lagoon pool or stroll the boutique shops and markets of Port Douglas.',
+          },
+          {
+            day: 9,
+            title: 'Farewell Australia',
+            description: 'Transfer to Cairns Airport for your departure flight.',
+          },
+        ],
+      },
+      {
+        title: 'Imperial India: Golden Triangle & Palaces',
+        destination: indId,
+        description: 'A luxurious journey across India’s Golden Triangle: delve into historic Delhi, view the sunset over the Taj Mahal in Agra, and discover regal palaces in Jaipur.',
+        price: 1699,
+        duration: '7 Days / 6 Nights',
+        maxGroupSize: 14,
+        featured: true,
+        inclusions: ['Luxury heritage hotel stays', 'Private air-conditioned SUV transport', 'Professional local guides', 'Taj Mahal VIP entry', 'Traditional Rajasthani dinner'],
+        exclusions: ['International airfare', 'Alcoholic beverages', 'Camera fees at monuments'],
+        availableDates: [
+          new Date('2026-07-01'),
+          new Date('2026-08-10'),
+          new Date('2026-10-05'),
+        ],
+        gallery: [
+          'https://images.unsplash.com/photo-1564507592333-c60657eea523?w=800&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&auto=format&fit=crop',
+          'https://images.unsplash.com/photo-1477584322902-471a5db55d3b?w=800&auto=format&fit=crop',
+        ],
+        itinerary: [
+          {
+            day: 1,
+            title: 'Arrival in New Delhi',
+            description: 'Welcome to India! Traditional garland greeting. Transfer to your luxury hotel and enjoy a Mughlai dinner.',
+          },
+          {
+            day: 2,
+            title: 'Old & New Delhi Tour',
+            description: 'Visit the majestic Red Fort, Jama Masjid, Humayun’s Tomb, and drive past the India Gate.',
+          },
+          {
+            day: 3,
+            title: 'Agra & The Taj Mahal',
+            description: 'Drive to Agra. Visit Agra Fort, and watch the sunset over the white marble Taj Mahal from across the Yamuna River.',
+          },
+          {
+            day: 4,
+            title: 'Sunrise Taj Mahal & Fatehpur Sikri',
+            description: 'Behold the Taj Mahal at sunrise. Afterwards, travel to Jaipur, stopping at the ghost city of Fatehpur Sikri.',
+          },
+          {
+            day: 5,
+            title: 'Jaipur - The Pink City',
+            description: 'Tour Amber Fort on a jeep, visit City Palace, Hawa Mahal (Palace of Winds), and the Jantar Mantar observatory.',
+          },
+          {
+            day: 6,
+            title: 'Jaipur Heritage & Cuisine',
+            description: 'Experience an authentic Rajasthani cooking class and explore the bustling Johari bazaar for textiles and jewelry.',
+          },
+          {
+            day: 7,
+            title: 'Return to Delhi',
+            description: 'Transfer back to Delhi International Airport for your flight home.',
           },
         ],
       },
@@ -392,9 +608,9 @@ const seedDB = async () => {
     ]);
 
     // Force recalculate reviews for average ratings on package model
-    await Review.getAverageRating(packages[0]._id);
-    await Review.getAverageRating(packages[1]._id);
-    await Review.getAverageRating(packages[2]._id);
+    for (const pkg of packages) {
+      await Review.getAverageRating(pkg._id);
+    }
 
     console.log('Seed: Created Reviews & Aggregated Ratings...');
 

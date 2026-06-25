@@ -132,7 +132,9 @@ const Navbar = () => {
           {user && (
             <Link
               to={user.role === 'admin' ? '/admin' : '/dashboard'}
-              className="text-gray-700 hover:text-primary transition-colors"
+              className={`${
+                !isScrolled && location.pathname === '/' ? 'text-white' : 'text-gray-700'
+              } hover:text-primary transition-colors`}
               title="Dashboard"
             >
               <FiUser className="text-xl" />
@@ -140,7 +142,9 @@ const Navbar = () => {
           )}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="text-gray-700 hover:text-primary transition-colors focus:outline-none"
+            className={`${
+              !isScrolled && location.pathname === '/' ? 'text-white' : 'text-gray-700'
+            } hover:text-primary transition-colors focus:outline-none`}
           >
             {isOpen ? <FiX className="text-2xl" /> : <FiMenu className="text-2xl" />}
           </button>

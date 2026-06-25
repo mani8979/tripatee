@@ -252,70 +252,7 @@
   pointer-events: none;
 }
 
-/* ══════════════════════════════════════════
-   MOBILE — absolute centering so the wide
-   image (banner + plane) always fits fully
-   ══════════════════════════════════════════ */
 @media (max-width: 600px) {
-
-  /* Switch to absolute so we can use
-     translate(-50%,-50%) for true centering */
-  .splash-plane-wrap {
-    position: absolute !important;
-    left: 50%;
-    top: 50%;
-    /* start off-screen; overridden by animation */
-    transform: translate(-150vw, -50%);
-  }
-
-  /* Mobile fly-in: keep -50% Y so image stays
-     vertically centred throughout */
-  .splash-plane-wrap.fly-in {
-    animation: flyInMobile 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-
-  /* Landed: image is fully centred + floats */
-  .splash-plane-wrap.plane-center {
-    transform: translate(-50%, -50%);
-    animation: gentleFloatMobile 3s ease-in-out infinite;
-  }
-
-  @keyframes flyInMobile {
-    0%   { transform: translate(-150vw, -50%) scale(0.8);  opacity: 0.7; }
-    65%  { transform: translate(calc(-50% + 10px), -50%) scale(1.04); opacity: 1; }
-    82%  { transform: translate(calc(-50% - 4px), -50%) scale(1.01); }
-    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-  }
-
-  @keyframes gentleFloatMobile {
-    0%,100% { transform: translate(-50%, -50%); }
-    50%     { transform: translate(-50%, calc(-50% - 8px)); }
-  }
-
-  /* Image: constrained so it never overflows the mobile screen */
-  .splash-plane-img {
-    width: 88vw;
-    max-width: 380px;
-    max-height: 44vh;
-    height: auto;
-    object-fit: contain;
-  }
-
-  /* Tagline sits below the absolute plane —
-     push it down from screen centre */
-  .splash-tagline {
-    position: absolute;
-    top: calc(50% + 28vw + 18px);
-    left: 50%;
-    transform: translateX(-50%) translateY(16px);
-    white-space: nowrap;
-    font-size: 0.9rem;
-    margin-top: 0;
-  }
-  .splash-tagline.tagline-visible {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
 
   /* Scale down clouds for narrow screens */
   .cloud-1 { width: 120px; height: 36px; }

@@ -100,6 +100,21 @@ const Footer = () => {
                 Swiss Alps Skiing
               </Link>
             </li>
+            <li>
+              <Link to="/packages?destination=United%20States" className="hover:text-secondary transition-colors">
+                United States (USA)
+              </Link>
+            </li>
+            <li>
+              <Link to="/packages?destination=Australia" className="hover:text-secondary transition-colors">
+                Australia
+              </Link>
+            </li>
+            <li>
+              <Link to="/packages?destination=India" className="hover:text-secondary transition-colors">
+                Incredible India
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -109,11 +124,11 @@ const Footer = () => {
           <ul className="flex flex-col gap-4 text-sm">
             <li className="flex items-start gap-3">
               <FiMapPin className="text-secondary text-lg mt-0.5 shrink-0" />
-              <span>100 Luxury Avenue, Suite 500, New York, NY 10001</span>
+              <span>Tripatee Travels, VIP Road, Visakhapatnam, Andhra Pradesh 530003, India</span>
             </li>
             <li className="flex items-center gap-3">
               <FiPhone className="text-secondary text-lg shrink-0" />
-              <span>+1 (800) 123-4567</span>
+              <span>+91 (800) 123-4567</span>
             </li>
             <li className="flex items-center gap-3">
               <FiMail className="text-secondary text-lg shrink-0" />
