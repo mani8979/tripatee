@@ -86,6 +86,10 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Tripatee Server listening on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode.`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Tripatee Server listening on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode.`);
+  });
+}
+
+export default app;
