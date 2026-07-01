@@ -252,7 +252,63 @@
   pointer-events: none;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+
+  /* On mobile, use absolute positioning + translate trick for true centering */
+  .splash-plane-wrap {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    /* Start off-screen to the left, but Y is pinned at 50% */
+    transform: translate(-150vw, -50%);
+  }
+
+  /* Mobile fly-in: keep -50% Y so it stays vertically centred the whole time */
+  .splash-plane-wrap.fly-in {
+    animation: flyInMobile 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* After landing: image stays centred and floats */
+  .splash-plane-wrap.plane-center {
+    transform: translate(-50%, -50%);
+    animation: gentleFloatMobile 3s ease-in-out infinite;
+  }
+
+  @keyframes flyInMobile {
+    0%   { transform: translate(-150vw, -50%) scale(0.8);             opacity: 0.7; }
+    65%  { transform: translate(calc(-50% + 8px), -50%) scale(1.04);  opacity: 1;   }
+    82%  { transform: translate(calc(-50% - 3px), -50%) scale(1.01);               }
+    100% { transform: translate(-50%, -50%) scale(1);                 opacity: 1;   }
+  }
+
+  @keyframes gentleFloatMobile {
+    0%, 100% { transform: translate(-50%, -50%);                }
+    50%      { transform: translate(-50%, calc(-50% - 8px));    }
+  }
+
+  /* Image: constrained so it never overflows narrow screens */
+  .splash-plane-img {
+    width: 82vw;
+    max-width: 340px;
+    max-height: 42vh;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* Tagline repositioned below the absolute-positioned logo */
+  .splash-tagline {
+    position: absolute;
+    top: calc(50% + 24vw + 20px);
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    white-space: nowrap;
+    font-size: 0.88rem;
+    margin-top: 0;
+  }
+  .splash-tagline.tagline-visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
 
   /* Scale down clouds for narrow screens */
   .cloud-1 { width: 120px; height: 36px; }
