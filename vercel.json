@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "cd client && npm install && npm run build",
-  "outputDirectory": "client/dist",
+  "buildCommand": "if [ -d client ]; then cd client && npm run build && cd .. && mkdir -p dist && cp -R client/dist/. dist/; else npm run build; fi",
+  "outputDirectory": "dist",
   "framework": null,
   "rewrites": [
     {
