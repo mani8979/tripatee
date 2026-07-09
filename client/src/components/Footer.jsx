@@ -11,7 +11,7 @@ const Footer = () => {
         {/* Brand Column */}
         <div className="flex flex-col gap-6">
           <Link to="/" className="text-2xl font-extrabold tracking-tight text-white">
-            Trip<span className="text-secondary">atee</span>
+            Flashmob<span className="text-secondary ml-1.5">Travels</span>
           </Link>
           <p className="text-sm leading-relaxed text-gray-500">
             Crafting premium, bespoke travel experiences since 2020. Discover curated tour packages, explore luxury destinations, and make lifelong memories.

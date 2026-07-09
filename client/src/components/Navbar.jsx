@@ -55,7 +55,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <span className="text-2xl font-extrabold tracking-tight text-primary font-sans flex items-center">
-            Trip<span className="text-secondary">atee</span>
+            Flashmob<span className="text-secondary ml-1.5">Travels</span>
           </span>
         </Link>
 
