@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
+import mongoose from 'mongoose';
 
 // Configuration & DB connection
 import connectDB from './config/db.js';
@@ -66,7 +67,29 @@ app.use('/uploads', express.static(uploadsDir));
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Tripatee backend services are running smoothly.' });
+  const readyState = mongoose.connection.readyState;
+  const states = {
+    0: 'disconnected',
+    1: 'connected',
+    2: 'connecting',
+    3: 'disconnecting',
+  };
+
+  let maskedUri = 'undefined';
+  const mongoUri = process.env.MONGO_URI;
+  if (mongoUri) {
+    // Mask password in connection string for security
+    maskedUri = mongoUri.replace(/:([^:@]+)@/, ':******@');
+  }
+
+  res.status(200).json({
+    status: 'OK',
+    message: 'Tripatee backend services are running.',
+    database: {
+      status: states[readyState] || 'unknown',
+      uri: maskedUri,
+    },
+  });
 });
 
 // Apply rate limiting to all general api routes
