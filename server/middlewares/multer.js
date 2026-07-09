@@ -5,9 +5,13 @@ import fs from 'fs';
 // Configure disk storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const dir = './uploads';
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
+    const dir = process.env.VERCEL ? '/tmp' : './uploads';
+    try {
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+    } catch (err) {
+      console.error('Error creating uploads folder:', err.message);
     }
     cb(null, dir);
   },

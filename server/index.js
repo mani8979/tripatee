@@ -53,8 +53,12 @@ app.use(express.urlencoded({ extended: true }));
 
 // Ensure uploads folder exists
 const uploadsDir = path.join(process.cwd(), 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
+try {
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
+} catch (error) {
+  console.warn('Could not create uploads directory (expected in read-only serverless environments like Vercel):', error.message);
 }
 
 // Serve uploaded images statically
