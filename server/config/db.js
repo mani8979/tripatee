@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
 
 const connectDB = async () => {
+  if (mongoose.connection.readyState === 1 || mongoose.connection.readyState === 2) {
+    return;
+  }
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/tripatee');
     console.log(`MongoDB Connected: ${conn.connection.host}`);

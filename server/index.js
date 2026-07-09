@@ -33,6 +33,19 @@ connectDB();
 
 const app = express();
 
+// Database connection middleware to ensure connection is active (robust on serverless)
+app.use(async (req, res, next) => {
+  if (mongoose.connection.readyState !== 1 && mongoose.connection.readyState !== 2) {
+    try {
+      console.log('Database not connected. Re-triggering connectDB()...');
+      await connectDB();
+    } catch (err) {
+      console.error('Database connection middleware error:', err.message);
+    }
+  }
+  next();
+});
+
 // Security Middlewares
 app.use(
   helmet({
