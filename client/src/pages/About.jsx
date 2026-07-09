@@ -35,7 +35,7 @@ const About = () => {
               We Craft Travel Masterpieces
             </h1>
             <p className="text-sm leading-relaxed text-gray-500 font-normal">
-              Founded in 2020, Tripatee emerged from a simple realization: travel should not be a transaction, it should be an art form. We reject standardized packages. Instead, we select, inspect, and curates elite global itineraries.
+              Founded in 2020, Flashmob Travels emerged from a simple realization: travel should not be a transaction, it should be an art form. We reject standardized packages. Instead, we select, inspect, and curates elite global itineraries.
             </p>
             <p className="text-sm leading-relaxed text-gray-500 font-normal">
               Our teams span three continents, working day and night to build local connections. From securing private access to museum galleries to reserving tables at Michelin-starred kitchens, we handle everything.

@@ -28,7 +28,7 @@ const sendEmail = async (options) => {
 
   // Mail options
   const mailOptions = {
-    from: `${process.env.SMTP_FROM || 'noreply@tripatee.com'}`,
+    from: `${process.env.SMTP_FROM || 'noreply@flashmobtravels.com'}`,
     to: options.email,
     subject: options.subject,
     text: options.message,

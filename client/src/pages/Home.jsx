@@ -105,7 +105,7 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-base md:text-xl text-gray-200/90 max-w-2xl font-light leading-relaxed"
           >
-            Unlock elite collections of hand-picked itineraries, 5-star hotels, and authentic experiences worldwide with Tripatee.
+            Unlock elite collections of hand-picked itineraries, 5-star hotels, and authentic experiences worldwide with Flashmob Travels.
           </motion.p>
 
           {/* Search Form Panel */}
@@ -367,7 +367,7 @@ const Home = () => {
                     ))}
                   </div>
                   <p className="text-sm text-gray-500 leading-relaxed italic">
-                    "Tripatee completely changed how we holiday. The overwater villa in the Maldives was pure luxury. Snorkeling alongside manta rays is a memory our family will cherish forever."
+                    "Flashmob Travels completely changed how we holiday. The overwater villa in the Maldives was pure luxury. Snorkeling alongside manta rays is a memory our family will cherish forever."
                   </p>
                 </div>
                 <div className="flex items-center gap-3 border-t border-gray-50 pt-4">
@@ -419,7 +419,7 @@ const Home = () => {
                     ))}
                   </div>
                   <p className="text-sm text-gray-500 leading-relaxed italic">
-                    "Paris was a dream come true! Skip-the-line tickets at Eiffel saved us hours. We spent the saved time enjoying champagne on a Seine river boat. Highly recommend booking through Tripatee!"
+                    "Paris was a dream come true! Skip-the-line tickets at Eiffel saved us hours. We spent the saved time enjoying champagne on a Seine river boat. Highly recommend booking through Flashmob Travels!"
                   </p>
                 </div>
                 <div className="flex items-center gap-3 border-t border-gray-50 pt-4">

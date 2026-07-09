@@ -124,7 +124,7 @@ const Footer = () => {
           <ul className="flex flex-col gap-4 text-sm">
             <li className="flex items-start gap-3">
               <FiMapPin className="text-secondary text-lg mt-0.5 shrink-0" />
-              <span>Tripatee Travels, VIP Road, Visakhapatnam, Andhra Pradesh 530003, India</span>
+              <span>Flashmob Travels, VIP Road, Visakhapatnam, Andhra Pradesh 530003, India</span>
             </li>
             <li className="flex items-center gap-3">
               <FiPhone className="text-secondary text-lg shrink-0" />
@@ -132,7 +132,7 @@ const Footer = () => {
             </li>
             <li className="flex items-center gap-3">
               <FiMail className="text-secondary text-lg shrink-0" />
-              <span>support@tripatee.com</span>
+              <span>support@flashmobtravels.com</span>
             </li>
           </ul>
         </div>
@@ -140,7 +140,7 @@ const Footer = () => {
 
       {/* Footer Bottom */}
       <div className="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-        <p>© {currentYear} Tripatee Ltd. All rights reserved.</p>
+        <p>© {currentYear} Flashmob Travels Ltd. All rights reserved.</p>
         <div className="flex gap-6">
           <Link to="/privacy" className="hover:underline">
             Privacy Policy

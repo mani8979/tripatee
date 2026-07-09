@@ -97,7 +97,7 @@ app.get('/api/health', (req, res) => {
 
   res.status(200).json({
     status: 'OK',
-    message: 'Tripatee backend services are running.',
+    message: 'Flashmob Travels backend services are running.',
     database: {
       status: states[readyState] || 'unknown',
       uri: maskedUri,
@@ -128,7 +128,7 @@ const PORT = process.env.PORT || 5000;
 
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {
-    console.log(`Tripatee Server listening on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode.`);
+    console.log(`Flashmob Travels Server listening on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode.`);
   });
 }
 

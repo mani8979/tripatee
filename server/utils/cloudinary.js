@@ -27,7 +27,7 @@ export const uploadImage = async (file) => {
   if (isCloudinaryConfigured) {
     try {
       const result = await cloudinary.uploader.upload(file.path, {
-        folder: 'tripatee',
+        folder: 'flashmob-travels',
       });
       // Delete temporary local file after upload
       if (fs.existsSync(file.path)) {

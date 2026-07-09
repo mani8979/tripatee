@@ -40,7 +40,7 @@ const Signup = () => {
       <div className="w-full max-w-md bg-white border border-gray-100 p-8 rounded-3xl shadow-xl text-left relative z-10">
         <div className="text-center mb-8 flex flex-col gap-1.5">
           <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">Create Account</h2>
-          <p className="text-xs text-gray-400 font-medium">Join Tripatee to start booking luxury tours</p>
+          <p className="text-xs text-gray-400 font-medium">Join Flashmob Travels to start booking luxury tours</p>
         </div>
 
         {authError && (

@@ -41,12 +41,12 @@ export const processPayment = async (req, res, next) => {
     await booking.save();
 
     // Send confirmation email
-    const emailMessage = `Dear ${booking.user.name},\n\nWe have successfully received your payment of $${booking.totalAmount} for your trip "${booking.package.title}".\n\nTransaction ID: ${transactionId}\nPayment Method: ${payment.paymentMethod}\nBooking Status: Confirmed\n\nGet ready for your next adventure with Tripatee!\n\nBest regards,\nThe Tripatee Team`;
+    const emailMessage = `Dear ${booking.user.name},\n\nWe have successfully received your payment of $${booking.totalAmount} for your trip "${booking.package.title}".\n\nTransaction ID: ${transactionId}\nPayment Method: ${payment.paymentMethod}\nBooking Status: Confirmed\n\nGet ready for your next adventure with Flashmob Travels!\n\nBest regards,\nThe Flashmob Travels Team`;
 
     try {
       await sendEmail({
         email: booking.user.email,
-        subject: `Tripatee Payment Success - Ticket Confirmed - ${booking.package.title}`,
+        subject: `Flashmob Travels Payment Success - Ticket Confirmed - ${booking.package.title}`,
         message: emailMessage,
         html: `
           <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
@@ -60,7 +60,7 @@ export const processPayment = async (req, res, next) => {
               <p style="margin: 5px 0;"><strong>Booking Status:</strong> <span style="color: #0D6EFD; font-weight: bold;">Confirmed</span></p>
             </div>
             <p>Your tickets and travel itinerary are now active. You can view them anytime in your profile dashboard.</p>
-            <p>Thank you for traveling with Tripatee!</p>
+            <p>Thank you for traveling with Flashmob Travels!</p>
           </div>
         `,
       });

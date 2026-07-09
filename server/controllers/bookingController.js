@@ -38,12 +38,12 @@ export const createBooking = async (req, res, next) => {
     });
 
     // Send email notification to user
-    const emailMessage = `Hello ${req.user.name},\n\nYour booking for the package "${tourPackage.title}" has been successfully created. We have received your order!\n\nBooking Details:\n- Package: ${tourPackage.title}\n- Travelers: ${travelersCount}\n- Date: ${new Date(bookingDate).toLocaleDateString()}\n- Total Cost: ₹${totalAmount}\n- Status: Pending Payment\n\nThank you for choosing Tripatee!`;
+    const emailMessage = `Hello ${req.user.name},\n\nYour booking for the package "${tourPackage.title}" has been successfully created. We have received your order!\n\nBooking Details:\n- Package: ${tourPackage.title}\n- Travelers: ${travelersCount}\n- Date: ${new Date(bookingDate).toLocaleDateString()}\n- Total Cost: ₹${totalAmount}\n- Status: Pending Payment\n\nThank you for choosing Flashmob Travels!`;
     
     try {
       await sendEmail({
         email: req.user.email,
-        subject: `Tripatee Booking Confirmation - Pending - ${tourPackage.title}`,
+        subject: `Flashmob Travels Booking Confirmation - Pending - ${tourPackage.title}`,
         message: emailMessage,
         html: `
           <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
@@ -73,7 +73,7 @@ export const createBooking = async (req, res, next) => {
               </tr>
             </table>
             <p style="margin-top: 20px;">We look forward to hosting you on this journey!</p>
-            <p>Best regards,<br/>The Tripatee Team</p>
+            <p>Best regards,<br/>The Flashmob Travels Team</p>
           </div>
         `,
       });

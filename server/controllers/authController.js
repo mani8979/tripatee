@@ -4,7 +4,7 @@ import sendEmail from '../utils/sendEmail.js';
 
 // Generate JWT token
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'tripatee_super_secret_jwt_key_12345', {
+  return jwt.sign({ id }, process.env.JWT_SECRET || 'flashmobtravels_super_secret_jwt_key_12345', {
     expiresIn: process.env.JWT_EXPIRES_IN || '7d',
   });
 };
@@ -49,15 +49,15 @@ export const signup = async (req, res, next) => {
     if (user) {
       if (!isVerified) {
         // Send OTP email
-        const emailMessage = `Welcome to Tripatee! Your verification code is ${otp}. This code expires in 10 minutes.`;
+        const emailMessage = `Welcome to Flashmob Travels! Your verification code is ${otp}. This code expires in 10 minutes.`;
         try {
           await sendEmail({
             email: user.email,
-            subject: 'Tripatee - Verify your Account',
+            subject: 'Flashmob Travels - Verify your Account',
             message: emailMessage,
             html: `
               <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
-                <h2 style="color: #0D6EFD;">Welcome to Tripatee!</h2>
+                <h2 style="color: #0D6EFD;">Welcome to Flashmob Travels!</h2>
                 <p>Thank you for signing up. Please verify your account using the verification code below:</p>
                 <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #00C2A8; border-radius: 4px; margin: 20px 0;">
                   ${otp}
@@ -164,12 +164,12 @@ export const resendOtp = async (req, res, next) => {
     const emailMessage = `Your new verification code is ${otp}. This code expires in 10 minutes.`;
     await sendEmail({
       email: user.email,
-      subject: 'Tripatee - Resend Verification Code',
+      subject: 'Flashmob Travels - Resend Verification Code',
       message: emailMessage,
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
           <h2 style="color: #0D6EFD;">Verification Code</h2>
-          <p>Please use the new verification code below to verify your Tripatee account:</p>
+          <p>Please use the new verification code below to verify your Flashmob Travels account:</p>
           <div style="background-color: #f8f9fa; padding: 15px; text-align: center; font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #00C2A8; border-radius: 4px; margin: 20px 0;">
             ${otp}
           </div>
@@ -205,7 +205,7 @@ export const login = async (req, res, next) => {
 
         await sendEmail({
           email: user.email,
-          subject: 'Tripatee - Verify your Account',
+          subject: 'Flashmob Travels - Verify your Account',
           message: `Your verification code is ${otp}. Please verify before logging in.`,
           html: `<p>Your verification code is <b>${otp}</b>. Please verify before logging in.</p>`,
         });
@@ -255,7 +255,7 @@ export const forgotPassword = async (req, res, next) => {
 
     await sendEmail({
       email: user.email,
-      subject: 'Tripatee - Password Reset Verification',
+      subject: 'Flashmob Travels - Password Reset Verification',
       message: `Your password reset code is ${otp}. It expires in 10 minutes.`,
       html: `
         <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 5px;">

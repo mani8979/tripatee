@@ -17,7 +17,7 @@ dotenv.config();
 
 const seedDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/tripatee');
+    await mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/flashmob-travels');
     console.log('Seed: Connected to Database...');
 
     // Clear all existing data
@@ -34,8 +34,8 @@ const seedDB = async () => {
 
     // 1. Create Users
     const admin = await User.create({
-      name: 'Admin Tripatee',
-      email: 'admin@tripatee.com',
+      name: 'Admin Flashmob',
+      email: 'admin@flashmobtravels.com',
       password: 'password123',
       role: 'admin',
       isVerified: true,
@@ -43,7 +43,7 @@ const seedDB = async () => {
 
     const client = await User.create({
       name: 'John Doe',
-      email: 'user@tripatee.com',
+      email: 'user@flashmobtravels.com',
       password: 'password123',
       role: 'user',
       isVerified: true,
@@ -591,7 +591,7 @@ const seedDB = async () => {
         user: client._id,
         package: packages[0]._id,
         rating: 5,
-        comment: 'Absolutely magical trip! The hotel in Paris was incredible, and skipping the lines at the Eiffel Tower saved us hours. Highly recommend Tripatee!',
+        comment: 'Absolutely magical trip! The hotel in Paris was incredible, and skipping the lines at the Eiffel Tower saved us hours. Highly recommend Flashmob Travels!',
       },
       {
         user: client._id,

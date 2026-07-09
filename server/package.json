@@ -1,7 +1,7 @@
 {
-  "name": "tripatee-server",
+  "name": "flashmob-travels-server",
   "version": "1.0.0",
-  "description": "Backend server for Tripatee Travel booking website",
+  "description": "Backend server for Flashmob Travels booking website",
   "main": "index.js",
   "type": "module",
   "scripts": {

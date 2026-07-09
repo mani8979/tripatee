@@ -65,7 +65,7 @@ const Contact = () => {
                 <FiMapPin className="text-secondary text-2xl shrink-0 mt-0.5" />
                 <div className="flex flex-col text-sm">
                   <span className="text-gray-400 font-medium">Headquarters</span>
-                  <span className="font-semibold text-white mt-1">Tripatee Travels, VIP Road, Visakhapatnam, Andhra Pradesh 530003, India</span>
+                  <span className="font-semibold text-white mt-1">Flashmob Travels, VIP Road, Visakhapatnam, Andhra Pradesh 530003, India</span>
                 </div>
               </div>
 
@@ -82,8 +82,8 @@ const Contact = () => {
                 <FiMail className="text-secondary text-2xl shrink-0 mt-0.5" />
                 <div className="flex flex-col text-sm">
                   <span className="text-gray-400 font-medium">Email Inquiries</span>
-                  <span className="font-semibold text-white mt-1">support@tripatee.com</span>
-                  <span className="font-semibold text-white">bookings@tripatee.com</span>
+                  <span className="font-semibold text-white mt-1">support@flashmobtravels.com</span>
+                  <span className="font-semibold text-white">bookings@flashmobtravels.com</span>
                 </div>
               </div>
 

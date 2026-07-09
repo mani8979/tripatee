@@ -16,7 +16,7 @@ export const subscribeNewsletter = async (req, res, next) => {
     await Newsletter.create({ email });
 
     res.status(201).json({
-      message: 'Thank you for subscribing to the Tripatee Newsletter!',
+      message: 'Thank you for subscribing to the Flashmob Travels Newsletter!',
     });
   } catch (error) {
     next(error);

@@ -48,8 +48,8 @@ const SplashScreen = ({ onFinish }) => {
         phase === 'hold' || phase === 'fade-out' ? 'plane-center' : ''
       }`}>
         <img
-          src="/tripatee-logo.png"
-          alt="Welcome to Tripatee Travels"
+          src="/flashmob-travels-logo.png"
+          alt="Welcome to Flashmob Travels"
           className="splash-plane-img"
         />
       </div>

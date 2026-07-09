@@ -1,13 +1,13 @@
-# Tripatee - Premium & Luxury Travel Booking Platform (MERN Stack)
+# Flashmob Travels - Premium & Luxury Travel Booking Platform (MERN Stack)
 
-Tripatee is a complete, production-ready travel booking platform built with the MERN stack (MongoDB, Express, React, Node.js). It offers a sleek luxury travel branding, responsive search filters, multi-step checkout booking simulation, and full administration panels for managing tours.
+Flashmob Travels is a complete, production-ready travel booking platform built with the MERN stack (MongoDB, Express, React, Node.js). It offers a sleek luxury travel branding, responsive search filters, multi-step checkout booking simulation, and full administration panels for managing tours.
 
 ---
 
 ## 📂 Project Structure
 
 ```text
-tripatee/
+flashmob-travels/
 ├── client/                 # React Frontend (Vite)
 │   ├── src/
 │   │   ├── assets/         # Static images & stylesheets
@@ -75,12 +75,12 @@ tripatee/
 Use the following pre-seeded credentials to test user journeys immediately:
 
 ### 👤 Customer Account
-- **Email:** `user@tripatee.com`
+- **Email:** `user@flashmobtravels.com`
 - **Password:** `password123`
 - **Verification:** Already verified
 
 ### 🔑 Administrator Account (Full Control)
-- **Email:** `admin@tripatee.com`
+- **Email:** `admin@flashmobtravels.com`
 - **Password:** `password123`
 - **Verification:** Already verified
 
