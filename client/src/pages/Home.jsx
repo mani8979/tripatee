@@ -96,8 +96,8 @@ const Home = () => {
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight font-sans"
           >
-            Escape the Ordinary, <br />
-            <span className="text-secondary">Explore the World</span>
+            Journey Beyond, <br />
+            <span className="text-secondary">Discover the Extraordinary</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
