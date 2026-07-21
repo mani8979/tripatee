@@ -35,31 +35,31 @@ const Destinations = () => {
   };
 
   return (
-    <div className="min-h-screen pt-28 pb-16 bg-gray-50/50">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="min-h-screen pt-32 pb-24 bg-warm-white">
+      <div className="max-w-7xl mx-auto px-6 md:px-8">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div className="flex flex-col gap-2 max-w-xl text-left">
-            <span className="text-primary text-xs font-extrabold uppercase tracking-widest flex items-center gap-1">
-              <FiCompass /> Discover Worlds
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 text-left">
+          <div className="flex flex-col gap-3 max-w-xl">
+            <span className="text-secondary text-xs font-black uppercase tracking-[0.2em] font-display flex items-center gap-1.5">
+              <FiCompass className="text-sm" /> Discover Worlds
             </span>
-            <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+            <h1 className="text-4xl md:text-5xl font-black text-primary tracking-tight font-display leading-tight">
               Explore Our Destinations
             </h1>
-            <p className="text-sm text-gray-500 leading-relaxed mt-1">
+            <p className="text-sm text-primary/60 leading-relaxed font-light mt-1">
               From the historic cobblestone alleys of Paris to the digital lights of Tokyo, select a destination to browse curated luxury itineraries.
             </p>
           </div>
 
           {/* Search bar */}
-          <div className="flex items-center gap-3 bg-white px-5 py-3 rounded-full border border-gray-200 shadow-sm w-full md:max-w-md shrink-0">
-            <FiSearch className="text-primary text-lg shrink-0" />
+          <div className="flex items-center gap-3 bg-white px-5 py-3.5 rounded-xl border border-primary/5 shadow-luxury w-full md:max-w-md shrink-0">
+            <FiSearch className="text-secondary text-lg shrink-0" />
             <input
               type="text"
               placeholder="Search by city or country..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="bg-transparent border-none outline-none text-sm w-full font-medium text-gray-700"
+              className="bg-transparent border-none outline-none text-xs w-full font-semibold text-primary placeholder-primary/30"
             />
           </div>
         </div>
@@ -67,47 +67,47 @@ const Destinations = () => {
         {/* Content Section */}
         {loading ? (
           <div className="h-64 flex items-center justify-center">
-            <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-8 h-8 border-4 border-secondary border-t-transparent rounded-full animate-spin"></div>
           </div>
         ) : filteredDestinations.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-3xl border border-gray-100 shadow-sm">
-            <FiMapPin className="text-4xl text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-gray-800">No Destinations Found</h3>
-            <p className="text-sm text-gray-500 mt-1">Try searching for other keywords.</p>
+          <div className="text-center py-20 bg-white rounded-[24px] border border-primary/5 shadow-luxury max-w-lg mx-auto">
+            <FiMapPin className="text-4xl text-primary/20 mx-auto mb-4" />
+            <h3 className="text-lg font-bold text-primary font-display">No Destinations Found</h3>
+            <p className="text-xs text-primary/50 mt-1">Try searching for other keywords.</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredDestinations.map((dest, index) => (
               <motion.div
                 key={dest._id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
                 onClick={() => handleDestinationClick(dest._id)}
-                className="relative group h-96 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer"
+                className="relative group h-[400px] rounded-[24px] overflow-hidden shadow-luxury hover:shadow-luxury-hover transition-all duration-500 hover:-translate-y-2 cursor-pointer text-left"
               >
                 {/* Background Image */}
                 <img
                   src={dest.image || 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&auto=format&fit=crop'}
                   alt={dest.name}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 brightness-[0.7]"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 brightness-[0.65]"
                 />
                 
                 {/* Gradient Shadow */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/30 to-transparent opacity-85 group-hover:opacity-90 transition-opacity"></div>
 
                 {/* Text Content */}
-                <div className="absolute bottom-0 left-0 w-full p-8 text-left text-white flex flex-col gap-2">
-                  <span className="text-secondary text-xs font-extrabold uppercase tracking-wider flex items-center gap-1">
-                    <FiMapPin /> {dest.country}
+                <div className="absolute bottom-0 left-0 w-full p-8 text-left text-white flex flex-col gap-2.5">
+                  <span className="text-secondary text-[10px] font-black uppercase tracking-wider flex items-center gap-1 bg-white/10 w-max px-3 py-1 rounded-md backdrop-blur-sm">
+                    <FiMapPin className="text-[11px]" /> {dest.country}
                   </span>
-                  <h3 className="text-2xl font-extrabold tracking-tight">{dest.name}</h3>
-                  <p className="text-xs text-gray-200/90 leading-relaxed font-light mt-1 line-clamp-2">
+                  <h3 className="text-2xl font-black font-display tracking-tight leading-tight">{dest.name}</h3>
+                  <p className="text-xs text-gray-300/90 leading-relaxed font-light line-clamp-2">
                     {dest.description}
                   </p>
                   
-                  <span className="text-white text-xs font-bold mt-4 flex items-center gap-1 group-hover:text-secondary transition-colors">
-                    View Tour Packages →
+                  <span className="text-white text-xs font-bold mt-4 flex items-center gap-1 group-hover:text-secondary transition-colors duration-300">
+                    View Tour Packages <FiCompass className="text-sm font-semibold" />
                   </span>
                 </div>
               </motion.div>

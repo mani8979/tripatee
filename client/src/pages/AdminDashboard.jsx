@@ -103,16 +103,18 @@ const AdminDashboard = () => {
   };
 
   const handleFileChange = (e) => {
-    setGalleryFiles(Array.from(e.target.files));
+    if (e.target.files) {
+      setGalleryFiles(Array.from(e.target.files));
+    }
   };
 
+  // Form Submit (Create / Edit)
   const handleCreateOrUpdatePackage = async (e) => {
     e.preventDefault();
-    setFormError('');
     setFormSubmitting(true);
+    setFormError('');
 
     try {
-      // Build form-data payload for multer images parser
       const formData = new FormData();
       formData.append('title', title);
       formData.append('destination', selectedDest);
@@ -120,87 +122,41 @@ const AdminDashboard = () => {
       formData.append('price', price);
       formData.append('duration', duration);
       formData.append('maxGroupSize', maxGroupSize);
-      formData.append('featured', featured.toString());
+      formData.append('featured', featured ? 'true' : 'false');
       formData.append('inclusions', JSON.stringify(inclusions));
       formData.append('exclusions', JSON.stringify(exclusions));
       formData.append('itinerary', JSON.stringify(itinerary));
 
-      // Append selected files
-      galleryFiles.forEach((file) => {
-        formData.append('gallery', file);
-      });
-
-      const config = {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      };
+      // Append files
+      if (galleryFiles.length > 0) {
+        galleryFiles.forEach((file) => {
+          formData.append('gallery', file);
+        });
+      }
 
       if (editingPackageId) {
-        await api.put(`/packages/${editingPackageId}`, formData, config);
-        alert('Package updated successfully!');
+        await api.put(`/packages/${editingPackageId}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
       } else {
-        await api.post('/packages', formData, config);
-        alert('New Package created successfully!');
+        await api.post('/packages', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
       }
 
       setShowPackageModal(false);
-      resetPackageForm();
-      loadDashboardData();
+      loadDashboardData(); // Refresh analytics & packages
     } catch (err) {
-      setFormError(err.response?.data?.message || 'Error processing package form.');
+      setFormError(err.response?.data?.message || 'Failed to submit form data.');
     } finally {
       setFormSubmitting(false);
     }
   };
 
-  const handleEditPackage = (pkg) => {
-    setEditingPackageId(pkg._id);
-    setTitle(pkg.title);
-    setSelectedDest(pkg.destination?._id || destinations[0]?._id);
-    setDescription(pkg.description);
-    setPrice(pkg.price.toString());
-    setDuration(pkg.duration);
-    setMaxGroupSize(pkg.maxGroupSize.toString());
-    setFeatured(pkg.featured || false);
-    setInclusions(pkg.inclusions || []);
-    setExclusions(pkg.exclusions || []);
-    setItinerary(pkg.itinerary || [{ day: 1, title: '', description: '' }]);
-    setShowPackageModal(true);
-  };
-
-  const handleDeletePackage = async (pkgId) => {
-    if (!window.confirm('Are you sure you want to delete this tour package permanently?')) return;
-    try {
-      await api.delete(`/packages/${pkgId}`);
-      alert('Package deleted successfully');
-      loadDashboardData();
-    } catch (err) {
-      alert('Failed to delete package');
-    }
-  };
-
-  const handleBookingStatusChange = async (bookingId, newStatus) => {
-    try {
-      await api.put(`/bookings/${bookingId}`, { status: newStatus });
-      alert('Booking status updated successfully');
-      loadDashboardData();
-    } catch (err) {
-      alert('Failed to update booking status');
-    }
-  };
-
-  const handleBookingPaymentChange = async (bookingId, newPaymentStatus) => {
-    try {
-      await api.put(`/bookings/${bookingId}`, { paymentStatus: newPaymentStatus });
-      alert('Payment status updated successfully');
-      loadDashboardData();
-    } catch (err) {
-      alert('Failed to update payment status');
-    }
-  };
-
-  const resetPackageForm = () => {
+  const openCreateModal = () => {
     setEditingPackageId(null);
     setTitle('');
+    if (destinations.length > 0) setSelectedDest(destinations[0]._id);
     setDescription('');
     setPrice('');
     setDuration('');
@@ -211,404 +167,458 @@ const AdminDashboard = () => {
     setItinerary([{ day: 1, title: '', description: '' }]);
     setGalleryFiles([]);
     setFormError('');
+    setShowPackageModal(true);
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
+  const openEditModal = (pkg) => {
+    setEditingPackageId(pkg._id);
+    setTitle(pkg.title);
+    setSelectedDest(pkg.destination?._id || pkg.destination);
+    setDescription(pkg.description);
+    setPrice(pkg.price);
+    setDuration(pkg.duration);
+    setMaxGroupSize(pkg.maxGroupSize?.toString() || '10');
+    setFeatured(pkg.featured || false);
+    setInclusions(pkg.inclusions || []);
+    setExclusions(pkg.exclusions || []);
+    setItinerary(pkg.itinerary?.length > 0 ? pkg.itinerary : [{ day: 1, title: '', description: '' }]);
+    setGalleryFiles([]);
+    setFormError('');
+    setShowPackageModal(true);
+  };
+
+  const handleDeletePackage = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this package?')) return;
+    try {
+      await api.delete(`/packages/${id}`);
+      loadDashboardData();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete tour package.');
+    }
+  };
+
+  const handleBookingStatusChange = async (bookingId, newStatus) => {
+    try {
+      await api.put(`/admin/bookings/${bookingId}/status`, { status: newStatus });
+      loadDashboardData();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to update booking status.');
+    }
+  };
+
+  const handleBookingPaymentChange = async (bookingId, newPaymentStatus) => {
+    try {
+      await api.put(`/admin/bookings/${bookingId}/payment`, { paymentStatus: newPaymentStatus });
+      loadDashboardData();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to update payment status.');
+    }
+  };
 
   return (
-    <div className="min-h-screen pt-28 pb-20 bg-gray-50/50">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-5 gap-10 text-left">
+    <div className="min-h-screen pt-32 pb-24 bg-warm-white">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-4 gap-12 text-left">
         
-        {/* Left Sidebar navigation */}
-        <div className="lg:col-span-1 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-6 h-max">
-          <div className="border-b border-gray-50 pb-4">
-            <h3 className="font-extrabold text-gray-900 text-sm">Control Panel</h3>
-            <span className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">RBAC Level: Admin</span>
+        {/* Left Side: Sidebar controls */}
+        <div className="lg:col-span-1 bg-white p-8 rounded-[24px] border border-primary/5 shadow-luxury flex flex-col gap-8 h-max">
+          <div className="flex items-center gap-3.5 border-b border-primary/5 pb-6">
+            <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-secondary font-black text-base border border-primary/5">
+              A
+            </div>
+            <div>
+              <h3 className="font-extrabold text-primary text-sm font-display">Administrator</h3>
+              <span className="text-[10px] text-secondary font-black uppercase tracking-wider font-display">Systems Operator</span>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2.5">
             <button
               onClick={() => setActiveTab('analytics')}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-left ${
-                activeTab === 'analytics' ? 'bg-primary text-white shadow-md shadow-primary/10' : 'text-gray-500 hover:bg-gray-50'
+              className={`flex items-center gap-3.5 px-5 py-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all text-left font-display cursor-pointer ${
+                activeTab === 'analytics' ? 'bg-primary text-white shadow-md' : 'text-primary/60 hover:bg-gray-50'
               }`}
             >
-              <FiTrendingUp className="text-lg" /> Dashboard Stats
+              <FiTrendingUp className="text-base" /> Analytics overview
             </button>
 
             <button
-              onClick={() => {
-                setActiveTab('packages');
-                resetPackageForm();
-              }}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-left ${
-                activeTab === 'packages' ? 'bg-primary text-white shadow-md shadow-primary/10' : 'text-gray-500 hover:bg-gray-50'
+              onClick={() => setActiveTab('packages')}
+              className={`flex items-center gap-3.5 px-5 py-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all text-left font-display cursor-pointer ${
+                activeTab === 'packages' ? 'bg-primary text-white shadow-md' : 'text-primary/60 hover:bg-gray-50'
               }`}
             >
-              <FiPackage className="text-lg" /> Manage Packages
+              <FiPackage className="text-base" /> Tour Packages
             </button>
 
             <button
               onClick={() => setActiveTab('bookings')}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-left ${
-                activeTab === 'bookings' ? 'bg-primary text-white shadow-md shadow-primary/10' : 'text-gray-500 hover:bg-gray-50'
+              className={`flex items-center gap-3.5 px-5 py-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all text-left font-display cursor-pointer ${
+                activeTab === 'bookings' ? 'bg-primary text-white shadow-md' : 'text-primary/60 hover:bg-gray-50'
               }`}
             >
-              <FiBriefcase className="text-lg" /> Manage Bookings
+              <FiBriefcase className="text-base" /> Bookings Control
             </button>
 
             <button
               onClick={() => setActiveTab('users')}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-bold transition-all text-left ${
-                activeTab === 'users' ? 'bg-primary text-white shadow-md shadow-primary/10' : 'text-gray-500 hover:bg-gray-50'
+              className={`flex items-center gap-3.5 px-5 py-3.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all text-left font-display cursor-pointer ${
+                activeTab === 'users' ? 'bg-primary text-white shadow-md' : 'text-primary/60 hover:bg-gray-50'
               }`}
             >
-              <FiUsers className="text-lg" /> Registered Users
+              <FiUsers className="text-base" /> Voyager Directory
             </button>
           </div>
         </div>
 
-        {/* Right Dashboard panel */}
-        <div className="lg:col-span-4 flex flex-col gap-10">
-          
-          {/* TAB 1: ANALYTICS DASHBOARD */}
-          {activeTab === 'analytics' && (
-            <div className="flex flex-col gap-8">
-              {/* Analytics KPI grid */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-2">
-                  <span className="text-lg font-extrabold text-secondary leading-none w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center select-none">₹</span>
-                  <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Total Revenue</span>
-                  <span className="text-2xl font-extrabold text-gray-900">₹{metrics?.totalRevenue}</span>
-                </div>
-
-                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-2">
-                  <FiBriefcase className="text-2xl text-primary" />
-                  <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Bookings count</span>
-                  <span className="text-2xl font-extrabold text-gray-900">{metrics?.totalBookings}</span>
-                </div>
-
-                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-2">
-                  <FiPackage className="text-2xl text-amber-500" />
-                  <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Packages count</span>
-                  <span className="text-2xl font-extrabold text-gray-900">{metrics?.totalPackages}</span>
-                </div>
-
-                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-2">
-                  <FiUsers className="text-2xl text-violet-500" />
-                  <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Travelers</span>
-                  <span className="text-2xl font-extrabold text-gray-900">{metrics?.totalUsers}</span>
-                </div>
-              </div>
-
-              {/* Recent bookings list */}
-              <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm text-left">
-                <h3 className="font-extrabold text-gray-900 text-sm border-b border-gray-50 pb-4 mb-6">Recent Bookings Log</h3>
-                
-                <div className="overflow-x-auto">
-                  <table className="w-full text-xs">
-                    <thead>
-                      <tr className="text-gray-400 uppercase font-bold tracking-wider border-b border-gray-100">
-                        <th className="pb-3 text-left">User</th>
-                        <th className="pb-3 text-left">Tour Package</th>
-                        <th className="pb-3 text-left">Pricing</th>
-                        <th className="pb-3 text-left">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-50 font-medium">
-                      {bookings.map((booking) => (
-                        <tr key={booking._id}>
-                          <td className="py-4 text-gray-800">{booking.user?.name}</td>
-                          <td className="py-4 text-gray-950 font-bold">{booking.package?.title}</td>
-                          <td className="py-4 text-primary font-bold">₹{booking.totalAmount}</td>
-                          <td className="py-4">
-                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                              booking.status === 'confirmed' ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'
-                            }`}>
-                              {booking.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+        {/* Right Side: Tab Contents */}
+        <div className="lg:col-span-3">
+          {loading ? (
+            <div className="h-64 flex items-center justify-center bg-white rounded-[24px] border border-primary/5 shadow-luxury">
+              <div className="w-8 h-8 border-4 border-secondary border-t-transparent rounded-full animate-spin"></div>
             </div>
-          )}
-
-          {/* TAB 2: MANAGE TOUR PACKAGES */}
-          {activeTab === 'packages' && (
-            <div className="flex flex-col gap-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-extrabold text-gray-900">Manage Tour Packages</h2>
-                <button
-                  onClick={() => {
-                    resetPackageForm();
-                    setShowPackageModal(true);
-                  }}
-                  className="bg-primary hover:bg-primary-hover text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-md shadow-primary/15 flex items-center gap-1.5 transition-all"
-                >
-                  <FiPlus className="text-sm" /> Add Tour
-                </button>
-              </div>
-
-              {/* Packages grid list */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {packages.map((pkg) => (
-                  <div
-                    key={pkg._id}
-                    className="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm flex gap-4 items-center justify-between"
-                  >
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={pkg.gallery?.[0]}
-                        alt="Tour"
-                        className="w-16 h-16 rounded-2xl object-cover shrink-0"
-                      />
-                      <div className="flex flex-col gap-1 text-left">
-                        <h4 className="font-extrabold text-gray-900 text-xs line-clamp-1">{pkg.title}</h4>
-                        <span className="text-[10px] text-gray-400 font-bold">₹{pkg.price} • {pkg.duration}</span>
-                        {pkg.featured && (
-                          <span className="text-[8px] bg-secondary/10 text-secondary w-max px-1.5 py-0.5 rounded font-extrabold uppercase">
-                            Featured
-                          </span>
-                        )}
+          ) : (
+            <>
+              {/* TAB 1: ANALYTICS OVERVIEW */}
+              {activeTab === 'analytics' && (
+                <div className="flex flex-col gap-8">
+                  <h2 className="text-2xl font-black text-primary font-display border-b border-primary/5 pb-4">Systems Analytics</h2>
+                  
+                  {/* Grid Metrics */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-white p-6 rounded-[20px] border border-primary/5 shadow-luxury flex items-center gap-4.5">
+                      <div className="w-12 h-12 rounded-xl bg-secondary/15 flex items-center justify-center text-secondary text-xl">
+                        <FiTrendingUp />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] text-primary/45 font-black uppercase tracking-wider">Total Sales (Est)</span>
+                        <strong className="text-xl text-primary font-display mt-0.5">₹{metrics?.totalSales?.toLocaleString('en-IN') || '0'}</strong>
                       </div>
                     </div>
 
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleEditPackage(pkg)}
-                        className="w-8.5 h-8.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-600 flex items-center justify-center transition-colors"
-                      >
-                        <FiEdit2 className="text-xs" />
-                      </button>
-                      <button
-                        onClick={() => handleDeletePackage(pkg._id)}
-                        className="w-8.5 h-8.5 rounded-xl bg-red-50 hover:bg-red-100 text-red-500 flex items-center justify-center transition-colors"
-                      >
-                        <FiTrash2 className="text-xs" />
-                      </button>
+                    <div className="bg-white p-6 rounded-[20px] border border-primary/5 shadow-luxury flex items-center gap-4.5">
+                      <div className="w-12 h-12 rounded-xl bg-secondary/15 flex items-center justify-center text-secondary text-xl">
+                        <FiBriefcase />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] text-primary/45 font-black uppercase tracking-wider">Total Bookings</span>
+                        <strong className="text-xl text-primary font-display mt-0.5">{metrics?.totalBookings || '0'}</strong>
+                      </div>
+                    </div>
+
+                    <div className="bg-white p-6 rounded-[20px] border border-primary/5 shadow-luxury flex items-center gap-4.5">
+                      <div className="w-12 h-12 rounded-xl bg-secondary/15 flex items-center justify-center text-secondary text-xl">
+                        <FiUsers />
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-[10px] text-primary/45 font-black uppercase tracking-wider">Registered Voyagers</span>
+                        <strong className="text-xl text-primary font-display mt-0.5">{metrics?.totalUsers || '0'}</strong>
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          )}
 
-          {/* TAB 3: MANAGE BOOKINGS */}
-          {activeTab === 'bookings' && (
-            <div className="flex flex-col gap-6">
-              <h2 className="text-xl font-extrabold text-gray-900">Manage Customer Bookings</h2>
-              
-              <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-xs">
-                    <thead>
-                      <tr className="text-gray-400 uppercase font-bold tracking-wider border-b border-gray-100">
-                        <th className="pb-3 text-left">User Details</th>
-                        <th className="pb-3 text-left">Tour Title</th>
-                        <th className="pb-3 text-left">Departure Date</th>
-                        <th className="pb-3 text-left">Payment Status</th>
-                        <th className="pb-3 text-left">Order Status</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-50 font-medium">
-                      {users.length > 0 && bookings.map((booking) => (
-                        <tr key={booking._id}>
-                          <td className="py-4 text-left">
-                            <p className="text-gray-800 font-bold">{booking.user?.name}</p>
-                            <p className="text-[10px] text-gray-400">{booking.user?.email}</p>
-                          </td>
-                          <td className="py-4 text-gray-950 font-bold">{booking.package?.title}</td>
-                          <td className="py-4 text-gray-500">{new Date(booking.bookingDate).toLocaleDateString()}</td>
-                          
-                          {/* Payment status edit drop down */}
-                          <td className="py-4">
-                            <select
-                              value={booking.paymentStatus}
-                              onChange={(e) => handleBookingPaymentChange(booking._id, e.target.value)}
-                              className="bg-gray-50 border border-gray-200 rounded-lg p-1.5 text-[10px] focus:outline-none"
-                            >
-                              <option value="pending">Pending</option>
-                              <option value="paid">Paid</option>
-                              <option value="refunded">Refunded</option>
-                            </select>
-                          </td>
-
-                          {/* Order Status edit drop down */}
-                          <td className="py-4">
-                            <select
-                              value={booking.status}
-                              onChange={(e) => handleBookingStatusChange(booking._id, e.target.value)}
-                              className="bg-gray-50 border border-gray-200 rounded-lg p-1.5 text-[10px] focus:outline-none"
-                            >
-                              <option value="pending">Pending</option>
-                              <option value="confirmed">Confirmed</option>
-                              <option value="cancelled">Cancelled</option>
-                            </select>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  {/* Recent Activity bookings table */}
+                  <div className="flex flex-col gap-4 mt-4">
+                    <h3 className="font-bold text-primary font-display text-lg">Recent Booking Inquiries</h3>
+                    <div className="bg-white p-6 rounded-[24px] border border-primary/5 shadow-luxury">
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-xs">
+                          <thead>
+                            <tr className="text-primary/45 uppercase font-bold tracking-widest border-b border-primary/5 font-display text-[9px] pb-3">
+                              <th className="pb-3 text-left">Voyager</th>
+                              <th className="pb-3 text-left">Selected Tour</th>
+                              <th className="pb-3 text-left">Departure Date</th>
+                              <th className="pb-3 text-right">Price</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-primary/5 font-medium text-primary/80">
+                            {bookings.slice(0, 5).map((b) => (
+                              <tr key={b._id}>
+                                <td className="py-4 text-left font-bold text-primary">{b.user?.name || 'Guest User'}</td>
+                                <td className="py-4 font-bold text-primary/95">{b.package?.title}</td>
+                                <td className="py-4 text-primary/60">{new Date(b.bookingDate).toLocaleDateString()}</td>
+                                <td className="py-4 text-right font-black text-secondary">₹{b.totalAmount?.toLocaleString('en-IN')}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          )}
+              )}
 
-          {/* TAB 4: REGISTERED USERS */}
-          {activeTab === 'users' && (
-            <div className="flex flex-col gap-6">
-              <h2 className="text-xl font-extrabold text-gray-900">Registered Users Directory</h2>
-              
-              <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-xs">
-                    <thead>
-                      <tr className="text-gray-400 uppercase font-bold tracking-wider border-b border-gray-100">
-                        <th className="pb-3 text-left">Name</th>
-                        <th className="pb-3 text-left">Email Address</th>
-                        <th className="pb-3 text-left">Role Position</th>
-                        <th className="pb-3 text-left">Verification State</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-50 font-medium">
-                      {users.map((u) => (
-                        <tr key={u._id}>
-                          <td className="py-4 text-gray-900 font-bold">{u.name}</td>
-                          <td className="py-4 text-gray-500">{u.email}</td>
-                          <td className="py-4">
-                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                              u.role === 'admin' ? 'bg-primary/10 text-primary' : 'bg-gray-100 text-gray-600'
-                            }`}>
-                              {u.role}
+              {/* TAB 2: MANAGE PACKAGES */}
+              {activeTab === 'packages' && (
+                <div className="flex flex-col gap-8">
+                  <div className="flex justify-between items-center border-b border-primary/5 pb-4">
+                    <h2 className="text-2xl font-black text-primary font-display">Manage Tour Packages</h2>
+                    <button
+                      onClick={openCreateModal}
+                      className="bg-primary hover:bg-secondary hover:text-primary text-white font-black text-[10px] uppercase tracking-wider px-5 py-2.5 rounded-lg flex items-center gap-1.5 transition-all duration-300 font-display cursor-pointer"
+                    >
+                      <FiPlus className="text-sm" /> Create Tour
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {packages.map((pkg) => (
+                      <div
+                        key={pkg._id}
+                        className="bg-white p-6 rounded-[20px] border border-primary/5 shadow-luxury flex justify-between gap-4 items-start"
+                      >
+                        <div className="flex gap-4 text-left">
+                          <img
+                            src={pkg.gallery?.[0]}
+                            alt="Tour"
+                            className="w-16 h-16 rounded-xl object-cover shrink-0 border border-primary/5"
+                          />
+                          <div className="flex flex-col gap-1">
+                            <h4 className="font-extrabold text-primary text-sm leading-tight line-clamp-1 font-display">{pkg.title}</h4>
+                            <span className="text-[10px] text-secondary font-black uppercase tracking-wider font-display">
+                              {pkg.destination?.name}
                             </span>
-                          </td>
-                          <td className="py-4">
-                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                              u.isVerified ? 'bg-emerald-50 text-emerald-600' : 'bg-red-50 text-red-500'
-                            }`}>
-                              {u.isVerified ? 'Verified' : 'Pending OTP'}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                            <span className="text-[11px] font-black text-primary mt-1">₹{pkg.price?.toLocaleString('en-IN')}</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1.5">
+                          <button
+                            onClick={() => openEditModal(pkg)}
+                            className="w-9 h-9 rounded-xl bg-gray-50 hover:bg-secondary hover:text-primary text-primary/60 border border-primary/5 flex items-center justify-center transition-colors cursor-pointer"
+                            title="Edit Tour"
+                          >
+                            <FiEdit2 className="text-xs" />
+                          </button>
+                          <button
+                            onClick={() => handleDeletePackage(pkg._id)}
+                            className="w-9 h-9 rounded-xl bg-red-50 hover:bg-red-100 text-red-500 border border-red-100 flex items-center justify-center transition-colors cursor-pointer"
+                            title="Delete Tour"
+                          >
+                            <FiTrash2 className="text-xs" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </div>
-          )}
+              )}
 
+              {/* TAB 3: MANAGE BOOKINGS */}
+              {activeTab === 'bookings' && (
+                <div className="flex flex-col gap-8">
+                  <h2 className="text-2xl font-black text-primary font-display border-b border-primary/5 pb-4">Customer Bookings</h2>
+                  
+                  <div className="bg-white p-6 md:p-8 rounded-[24px] border border-primary/5 shadow-luxury">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="text-primary/45 uppercase font-bold tracking-widest border-b border-primary/5 pb-3 font-display text-[9px]">
+                            <th className="pb-3 text-left">Voyager Details</th>
+                            <th className="pb-3 text-left">Tour Package</th>
+                            <th className="pb-3 text-left">Departure Date</th>
+                            <th className="pb-3 text-left">Payment</th>
+                            <th className="pb-3 text-left">Order Status</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-primary/5 font-medium text-primary/80">
+                          {bookings.map((booking) => (
+                            <tr key={booking._id}>
+                              <td className="py-4 text-left">
+                                <p className="text-primary font-bold">{booking.user?.name || 'Guest User'}</p>
+                                <p className="text-[10px] text-primary/40 mt-0.5">{booking.user?.email || 'N/A'}</p>
+                              </td>
+                              <td className="py-4 text-primary font-bold leading-tight">{booking.package?.title}</td>
+                              <td className="py-4 text-primary/60">{new Date(booking.bookingDate).toLocaleDateString()}</td>
+                              
+                              {/* Payment status edit drop down */}
+                              <td className="py-4">
+                                <div className="bg-gray-50 border border-primary/5 rounded-lg px-1.5 py-1 w-max">
+                                  <select
+                                    value={booking.paymentStatus}
+                                    onChange={(e) => handleBookingPaymentChange(booking._id, e.target.value)}
+                                    className="bg-transparent border-none outline-none text-[10px] font-bold text-primary focus:ring-0 cursor-pointer"
+                                  >
+                                    <option value="pending">Pending</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="refunded">Refunded</option>
+                                  </select>
+                                </div>
+                              </td>
+
+                              {/* Order Status edit drop down */}
+                              <td className="py-4">
+                                <div className="bg-gray-50 border border-primary/5 rounded-lg px-1.5 py-1 w-max">
+                                  <select
+                                    value={booking.status}
+                                    onChange={(e) => handleBookingStatusChange(booking._id, e.target.value)}
+                                    className="bg-transparent border-none outline-none text-[10px] font-bold text-primary focus:ring-0 cursor-pointer"
+                                  >
+                                    <option value="pending">Pending</option>
+                                    <option value="confirmed">Confirmed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                  </select>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 4: REGISTERED USERS */}
+              {activeTab === 'users' && (
+                <div className="flex flex-col gap-8">
+                  <h2 className="text-2xl font-black text-primary font-display border-b border-primary/5 pb-4">Voyager Directory</h2>
+                  
+                  <div className="bg-white p-6 md:p-8 rounded-[24px] border border-primary/5 shadow-luxury">
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr className="text-primary/45 uppercase font-bold tracking-widest border-b border-primary/5 pb-3 font-display text-[9px]">
+                            <th className="pb-3 text-left">Name</th>
+                            <th className="pb-3 text-left">Email Address</th>
+                            <th className="pb-3 text-left">Role Position</th>
+                            <th className="pb-3 text-left">Verification State</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-primary/5 font-medium text-primary/80">
+                          {users.map((u) => (
+                            <tr key={u._id}>
+                              <td className="py-4 text-primary font-bold text-left">{u.name}</td>
+                              <td className="py-4 text-primary/60 text-left">{u.email}</td>
+                              <td className="py-4 text-left">
+                                <span className={`px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider font-display ${
+                                  u.role === 'admin' ? 'bg-primary/10 text-primary border border-primary/15' : 'bg-gray-100 text-primary/65 border border-gray-200'
+                                }`}>
+                                  {u.role}
+                                </span>
+                              </td>
+                              <td className="py-4 text-left">
+                                <span className={`px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider font-display ${
+                                  u.isVerified ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-red-50 text-red-500 border border-red-100'
+                                }`}>
+                                  {u.isVerified ? 'Verified' : 'Pending OTP'}
+                                </span>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </div>
       </div>
 
       {/* CREATE / EDIT TOUR PACKAGE MODAL */}
       {showPackageModal && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl w-full max-w-3xl max-h-[85vh] overflow-y-auto p-8 relative text-left shadow-2xl">
+        <div className="fixed inset-0 bg-primary/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-white rounded-[28px] w-full max-w-3xl max-h-[85vh] overflow-y-auto p-8 sm:p-10 relative text-left shadow-2xl border border-primary/5">
             <button
               onClick={() => setShowPackageModal(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-700"
+              className="absolute top-5 right-5 w-10 h-10 rounded-full bg-gray-50 border border-primary/5 flex items-center justify-center hover:scale-105 transition-all text-primary/60 cursor-pointer"
             >
-              <FiX className="text-xl" />
+              <FiX className="text-lg" />
             </button>
 
-            <h3 className="text-xl font-extrabold text-gray-900 mb-6">
-              {editingPackageId ? 'Edit Tour Package' : 'Create Tour Package'}
+            <h3 className="text-2xl font-black text-primary font-display mb-6 border-b border-primary/5 pb-3">
+              {editingPackageId ? 'Edit Tour Package' : 'Publish Tour Package'}
             </h3>
 
-            {formError && <p className="text-xs text-red-500 font-bold bg-red-50 p-3 rounded-xl mb-6">{formError}</p>}
+            {formError && <p className="text-xs text-red-600 font-bold bg-red-50 border border-red-100 p-4 rounded-xl mb-6">{formError}</p>}
 
-            <form onSubmit={handleCreateOrUpdatePackage} className="flex flex-col gap-6 text-xs text-gray-700">
+            <form onSubmit={handleCreateOrUpdatePackage} className="flex flex-col gap-5 text-xs text-primary/70 font-semibold">
               
               {/* Row 1 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase">Tour Title</label>
+                  <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Tour Title</label>
                   <input
                     type="text"
                     required
                     placeholder="Grand Voyage to Kyoto"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:bg-white"
+                    className="px-4 py-3 bg-gray-50 border border-primary/5 rounded-xl text-primary font-semibold focus:outline-none focus:border-secondary focus:bg-white"
                   />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase">Associated Destination</label>
-                  <select
-                    value={selectedDest}
-                    onChange={(e) => setSelectedDest(e.target.value)}
-                    className="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none"
-                  >
-                    {destinations.map((d) => (
-                      <option key={d._id} value={d._id}>
-                        {d.name}, {d.country}
-                      </option>
-                    ))}
-                  </select>
+                  <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Destination</label>
+                  <div className="bg-gray-50 border border-primary/5 rounded-xl px-2 py-0.5">
+                    <select
+                      value={selectedDest}
+                      onChange={(e) => setSelectedDest(e.target.value)}
+                      className="bg-transparent border-none outline-none text-xs text-primary font-semibold w-full py-2.5 cursor-pointer focus:ring-0"
+                    >
+                      {destinations.map((d) => (
+                        <option key={d._id} value={d._id}>
+                          {d.name}, {d.country}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
 
               {/* Row 2 */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase">Price (USD)</label>
+                  <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Price (INR)</label>
                   <input
                     type="number"
                     required
-                    placeholder="1500"
+                    placeholder="99999"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
-                    className="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:bg-white"
+                    className="px-4 py-3 bg-gray-50 border border-primary/5 rounded-xl text-primary font-semibold focus:outline-none focus:border-secondary focus:bg-white"
                   />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase">Duration Description</label>
+                  <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Duration Description</label>
                   <input
                     type="text"
                     required
                     placeholder="5 Days / 4 Nights"
                     value={duration}
                     onChange={(e) => setDuration(e.target.value)}
-                    className="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:bg-white"
+                    className="px-4 py-3 bg-gray-50 border border-primary/5 rounded-xl text-primary font-semibold focus:outline-none focus:border-secondary focus:bg-white"
                   />
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase">Max Group Size</label>
+                  <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Max Group Size</label>
                   <input
                     type="number"
                     required
                     placeholder="12"
                     value={maxGroupSize}
                     onChange={(e) => setMaxGroupSize(e.target.value)}
-                    className="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:bg-white"
+                    className="px-4 py-3 bg-gray-50 border border-primary/5 rounded-xl text-primary font-semibold focus:outline-none focus:border-secondary focus:bg-white"
                   />
                 </div>
               </div>
 
               {/* Description */}
               <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-bold text-gray-500 uppercase">Tour Description</label>
+                <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Tour Description</label>
                 <textarea
                   required
                   rows="3"
                   placeholder="Detail the package's highlights..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-primary focus:bg-white resize-none"
+                  className="px-4 py-3 bg-gray-50 border border-primary/5 rounded-xl text-primary font-semibold focus:outline-none focus:border-secondary focus:bg-white resize-none"
                 ></textarea>
               </div>
 
@@ -617,28 +627,28 @@ const AdminDashboard = () => {
                 
                 {/* Inclusions */}
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase">Inclusions</label>
+                  <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Inclusions</label>
                   <div className="flex gap-2">
                     <input
                       type="text"
                       placeholder="e.g. 5-star Hotel lodging"
                       value={incInput}
                       onChange={(e) => setIncInput(e.target.value)}
-                      className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs"
+                      className="flex-1 px-3 py-2.5 bg-gray-50 border border-primary/5 rounded-xl text-xs font-semibold text-primary"
                     />
                     <button
                       type="button"
                       onClick={handleAddInclusion}
-                      className="bg-gray-100 hover:bg-gray-200 px-3 rounded-lg font-bold"
+                      className="bg-primary hover:bg-secondary hover:text-primary text-white px-4 rounded-xl text-[10px] uppercase font-black font-display cursor-pointer transition-colors"
                     >
                       Add
                     </button>
                   </div>
-                  <div className="flex flex-wrap gap-1.5 mt-1.5">
+                  <div className="flex flex-wrap gap-1.5 mt-2">
                     {inclusions.map((inc, i) => (
-                      <span key={i} className="bg-emerald-50 text-emerald-600 font-bold px-2 py-0.5 rounded flex items-center gap-1">
+                      <span key={i} className="bg-emerald-50 text-emerald-600 border border-emerald-100 font-bold px-3 py-1 rounded-md flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-display">
                         {inc}
-                        <FiX className="cursor-pointer" onClick={() => setInclusions(inclusions.filter((_, idx) => idx !== i))} />
+                        <FiX className="cursor-pointer text-xs" onClick={() => setInclusions(inclusions.filter((_, idx) => idx !== i))} />
                       </span>
                     ))}
                   </div>
@@ -646,28 +656,28 @@ const AdminDashboard = () => {
 
                 {/* Exclusions */}
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase">Exclusions</label>
+                  <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Exclusions</label>
                   <div className="flex gap-2">
                     <input
                       type="text"
                       placeholder="e.g. Flight insurance"
                       value={excInput}
                       onChange={(e) => setExcInput(e.target.value)}
-                      className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-xs"
+                      className="flex-1 px-3 py-2.5 bg-gray-50 border border-primary/5 rounded-xl text-xs font-semibold text-primary"
                     />
                     <button
                       type="button"
                       onClick={handleAddExclusion}
-                      className="bg-gray-100 hover:bg-gray-200 px-3 rounded-lg font-bold"
+                      className="bg-primary hover:bg-secondary hover:text-primary text-white px-4 rounded-xl text-[10px] uppercase font-black font-display cursor-pointer transition-colors"
                     >
                       Add
                     </button>
                   </div>
-                  <div className="flex flex-wrap gap-1.5 mt-1.5">
+                  <div className="flex flex-wrap gap-1.5 mt-2">
                     {exclusions.map((exc, i) => (
-                      <span key={i} className="bg-rose-50 text-rose-500 font-bold px-2 py-0.5 rounded flex items-center gap-1">
+                      <span key={i} className="bg-rose-50 text-rose-500 border border-rose-100 font-bold px-3 py-1 rounded-md flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-display">
                         {exc}
-                        <FiX className="cursor-pointer" onClick={() => setExclusions(exclusions.filter((_, idx) => idx !== i))} />
+                        <FiX className="cursor-pointer text-xs" onClick={() => setExclusions(exclusions.filter((_, idx) => idx !== i))} />
                       </span>
                     ))}
                   </div>
@@ -677,35 +687,35 @@ const AdminDashboard = () => {
               {/* Itinerary Daily breakdown dynamics */}
               <div className="flex flex-col gap-3">
                 <div className="flex justify-between items-center">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase">Itinerary Timeline</label>
+                  <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Itinerary Timeline</label>
                   <button
                     type="button"
                     onClick={handleAddItineraryDay}
-                    className="text-primary font-bold hover:underline"
+                    className="text-secondary font-black hover:text-primary text-xs uppercase tracking-wider font-display cursor-pointer"
                   >
                     + Add Day
                   </button>
                 </div>
                 <div className="flex flex-col gap-3.5 max-h-60 overflow-y-auto pr-2">
                   {itinerary.map((day, idx) => (
-                    <div key={idx} className="p-4 border border-gray-100 rounded-xl flex flex-col gap-2.5 bg-gray-50/20 relative">
+                    <div key={idx} className="p-5 border border-primary/5 rounded-2xl flex flex-col gap-3 bg-gray-50/20 relative text-left">
                       {idx > 0 && (
                         <button
                           type="button"
                           onClick={() => handleRemoveItineraryDay(idx)}
-                          className="absolute top-2 right-2 text-red-500 hover:text-red-700"
+                          className="absolute top-3 right-3 text-red-500 hover:text-red-700 cursor-pointer"
                         >
-                          <FiX />
+                          <FiX className="text-base" />
                         </button>
                       )}
-                      <span className="font-bold text-primary">Day {day.day}</span>
+                      <span className="font-extrabold text-primary font-display uppercase tracking-wider text-[10px]">Day {day.day} details</span>
                       <input
                         type="text"
                         required
                         placeholder="Day Title (e.g. Arrival in Tokyo)"
                         value={day.title}
                         onChange={(e) => handleItineraryChange(idx, 'title', e.target.value)}
-                        className="px-3 py-2 bg-white border border-gray-200 rounded-lg"
+                        className="px-4 py-2.5 bg-white border border-primary/5 rounded-xl text-primary font-semibold text-xs"
                       />
                       <textarea
                         required
@@ -713,7 +723,7 @@ const AdminDashboard = () => {
                         placeholder="What will travelers explore today?"
                         value={day.description}
                         onChange={(e) => handleItineraryChange(idx, 'description', e.target.value)}
-                        className="px-3 py-2 bg-white border border-gray-200 rounded-lg resize-none"
+                        className="px-4 py-2.5 bg-white border border-primary/5 rounded-xl text-primary font-semibold text-xs resize-none"
                       ></textarea>
                     </div>
                   ))}
@@ -721,25 +731,27 @@ const AdminDashboard = () => {
               </div>
 
               {/* Featured toggle & Image uploads */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                <label className="flex items-center gap-2 font-bold cursor-pointer select-none text-gray-800">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center border-t border-primary/5 pt-5 mt-2">
+                <label className="flex items-center gap-2.5 font-bold cursor-pointer select-none text-primary">
                   <input
                     type="checkbox"
                     checked={featured}
                     onChange={(e) => setFeatured(e.target.checked)}
-                    className="accent-primary w-4.5 h-4.5"
+                    className="accent-secondary w-4.5 h-4.5"
                   />
-                  Featured Package (Shows on Homepage)
+                  <span>Featured Package (Shows on Homepage)</span>
                 </label>
 
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] font-bold text-gray-500 uppercase flex items-center gap-1"><FiImage /> Upload Gallery Images</label>
+                <div className="flex flex-col gap-1.5 text-left">
+                  <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5 flex items-center gap-1.5">
+                    <FiImage className="text-secondary" /> Upload Gallery Images
+                  </label>
                   <input
                     type="file"
                     multiple
                     accept="image/*"
                     onChange={handleFileChange}
-                    className="text-xs"
+                    className="text-xs text-primary/60 font-semibold"
                   />
                 </div>
               </div>
@@ -748,7 +760,7 @@ const AdminDashboard = () => {
               <button
                 type="submit"
                 disabled={formSubmitting}
-                className="w-full bg-secondary hover:bg-secondary-hover text-white font-extrabold py-3.5 rounded-xl transition-all shadow-md shadow-secondary/10 disabled:opacity-50 mt-4"
+                className="w-full bg-primary hover:bg-secondary hover:text-primary text-white font-black text-xs uppercase tracking-wider py-4.5 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 mt-4 font-display cursor-pointer"
               >
                 {formSubmitting ? 'Uploading & Processing...' : editingPackageId ? 'Save Package Details' : 'Publish Package Tour'}
               </button>

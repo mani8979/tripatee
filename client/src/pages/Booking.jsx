@@ -108,18 +108,18 @@ const Booking = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      <div className="min-h-screen flex items-center justify-center bg-warm-white">
+        <div className="w-8 h-8 border-4 border-secondary border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
 
   if (!tourPackage) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-6 text-center">
-        <h2 className="text-xl font-extrabold text-gray-900 mb-2">Package Not Found</h2>
-        <p className="text-xs text-gray-500 mb-6 max-w-sm">The package you are trying to book could not be found or does not exist.</p>
-        <button onClick={() => navigate('/packages')} className="bg-primary hover:bg-primary-hover text-white text-xs font-bold px-6 py-3.5 rounded-xl transition-all shadow-md">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-warm-white px-6 text-center">
+        <h2 className="text-xl font-bold text-primary font-display mb-2">Package Not Found</h2>
+        <p className="text-xs text-primary/50 mb-6 max-w-sm font-light">The package you are trying to book could not be found or does not exist.</p>
+        <button onClick={() => navigate('/packages')} className="bg-primary hover:bg-secondary hover:text-primary text-white text-xs font-black uppercase tracking-wider px-6 py-3 rounded-xl transition-all shadow-sm font-display cursor-pointer">
           Browse All Packages
         </button>
       </div>
@@ -127,40 +127,40 @@ const Booking = () => {
   }
 
   return (
-    <div className="min-h-screen pt-28 pb-20 bg-gray-50/50">
-      <div className="max-w-4xl mx-auto px-6">
+    <div className="min-h-screen pt-32 pb-24 bg-warm-white">
+      <div className="max-w-4xl mx-auto px-6 md:px-8">
         
         {/* PROGRESS INDICATOR BAR */}
-        <div className="flex items-center justify-between mb-10 max-w-lg mx-auto">
+        <div className="flex items-center justify-between mb-16 max-w-md mx-auto">
           <div className="flex flex-col items-center gap-2">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shadow transition-all ${
-              step >= 1 ? 'bg-primary text-white' : 'bg-white border border-gray-200 text-gray-400'
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs shadow-sm transition-all font-display ${
+              step >= 1 ? 'bg-primary text-secondary border border-secondary/20' : 'bg-white border border-primary/5 text-primary/40'
             }`}>
               1
             </div>
-            <span className={`text-[10px] font-bold uppercase tracking-wider ${step >= 1 ? 'text-primary' : 'text-gray-400'}`}>Guests</span>
+            <span className={`text-[10px] font-black uppercase tracking-widest font-display ${step >= 1 ? 'text-primary' : 'text-primary/40'}`}>Guests</span>
           </div>
           
-          <div className={`flex-1 h-0.5 mx-4 transition-all ${step >= 2 ? 'bg-primary' : 'bg-gray-200'}`}></div>
+          <div className={`flex-1 h-0.5 mx-4 transition-all ${step >= 2 ? 'bg-primary' : 'bg-primary/5'}`}></div>
 
           <div className="flex flex-col items-center gap-2">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shadow transition-all ${
-              step >= 2 ? 'bg-primary text-white' : 'bg-white border border-gray-200 text-gray-400'
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs shadow-sm transition-all font-display ${
+              step >= 2 ? 'bg-primary text-secondary border border-secondary/20' : 'bg-white border border-primary/5 text-primary/40'
             }`}>
               2
             </div>
-            <span className={`text-[10px] font-bold uppercase tracking-wider ${step >= 2 ? 'text-primary' : 'text-gray-400'}`}>Payment</span>
+            <span className={`text-[10px] font-black uppercase tracking-widest font-display ${step >= 2 ? 'text-primary' : 'text-primary/40'}`}>Payment</span>
           </div>
-
-          <div className={`flex-1 h-0.5 mx-4 transition-all ${step >= 3 ? 'bg-primary' : 'bg-gray-200'}`}></div>
+          
+          <div className={`flex-1 h-0.5 mx-4 transition-all ${step >= 3 ? 'bg-primary' : 'bg-primary/5'}`}></div>
 
           <div className="flex flex-col items-center gap-2">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm shadow transition-all ${
-              step === 3 ? 'bg-primary text-white' : 'bg-white border border-gray-200 text-gray-400'
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs shadow-sm transition-all font-display ${
+              step === 3 ? 'bg-primary text-secondary border border-secondary/20' : 'bg-white border border-primary/5 text-primary/40'
             }`}>
               3
             </div>
-            <span className={`text-[10px] font-bold uppercase tracking-wider ${step === 3 ? 'text-primary' : 'text-gray-400'}`}>Confirm</span>
+            <span className={`text-[10px] font-black uppercase tracking-widest font-display ${step === 3 ? 'text-primary' : 'text-primary/40'}`}>Confirm</span>
           </div>
         </div>
 
@@ -168,7 +168,7 @@ const Booking = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
           
           {/* Main Checkout Panel (Steps 1 & 2) */}
-          <div className="md:col-span-2 bg-white p-8 rounded-3xl border border-gray-100 shadow-sm text-left">
+          <div className="md:col-span-2 bg-white p-8 md:p-10 rounded-[28px] border border-primary/5 shadow-luxury text-left">
             <AnimatePresence mode="wait">
               
               {/* STEP 1: TRAVELERS DETAILS */}
@@ -179,52 +179,52 @@ const Booking = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 10 }}
                 >
-                  <h2 className="text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-2">
-                    <FiUsers className="text-primary" /> Guest Details
+                  <h2 className="text-xl font-bold text-primary font-display mb-6 border-b border-primary/5 pb-3 flex items-center gap-2">
+                    <FiUsers className="text-secondary" /> Guest Details
                   </h2>
 
                   <form onSubmit={handleSubmit(handleTravelersSubmit)} className="flex flex-col gap-6">
                     {fields.map((field, idx) => (
-                      <div key={field.id} className="p-5 border border-gray-100 rounded-2xl flex flex-col gap-4 bg-gray-50/30">
-                        <span className="text-xs font-bold text-primary">Traveler #{idx + 1}</span>
+                      <div key={field.id} className="p-6 border border-primary/5 rounded-[18px] flex flex-col gap-4 bg-gray-50/30">
+                        <span className="text-xs font-bold text-primary pl-0.5">Traveler #{idx + 1}</span>
                         
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-semibold text-primary">
                           {/* Name */}
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">Full Name</label>
+                          <div className="flex flex-col gap-1.5 text-left">
+                            <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Full Name</label>
                             <input
                               type="text"
                               required
                               placeholder="Name as on Passport"
                               {...register(`travelers.${idx}.name`, { required: true })}
-                              className="px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-primary"
+                              className="px-4 py-3 bg-white border border-primary/5 rounded-xl text-xs font-semibold focus:outline-none focus:border-secondary transition-all"
                             />
                           </div>
 
                           {/* Age */}
-                          <div className="flex flex-col gap-1.5">
-                            <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">Age</label>
+                          <div className="flex flex-col gap-1.5 text-left">
+                            <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Age</label>
                             <input
                               type="number"
                               required
                               placeholder="Age"
                               {...register(`travelers.${idx}.age`, { required: true, min: 1 })}
-                              className="px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-primary"
+                              className="px-4 py-3 bg-white border border-primary/5 rounded-xl text-xs font-semibold focus:outline-none focus:border-secondary transition-all"
                             />
                           </div>
                         </div>
 
                         {/* Gender */}
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">Gender</label>
-                          <div className="flex gap-4">
+                        <div className="flex flex-col gap-2.5 text-left mt-1.5">
+                          <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Gender</label>
+                          <div className="flex gap-6">
                             {['Male', 'Female', 'Other'].map((g) => (
-                              <label key={g} className="flex items-center gap-2 text-xs font-semibold text-gray-700 cursor-pointer">
+                              <label key={g} className="flex items-center gap-2 text-xs font-bold text-primary/75 cursor-pointer">
                                 <input
                                   type="radio"
                                   value={g}
                                   {...register(`travelers.${idx}.gender`)}
-                                  className="accent-primary"
+                                  className="accent-secondary w-4.5 h-4.5"
                                 />
                                 {g}
                               </label>
@@ -239,7 +239,7 @@ const Booking = () => {
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="w-full bg-primary hover:bg-primary-hover text-white text-xs font-bold py-4 rounded-xl transition-all shadow-md shadow-primary/10 disabled:opacity-50"
+                      className="w-full bg-primary hover:bg-secondary hover:text-primary text-white font-black text-xs uppercase tracking-wider py-4.5 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 mt-2 font-display cursor-pointer"
                     >
                       {submitting ? 'Creating Order...' : 'Continue to Payment'}
                     </button>
@@ -255,60 +255,60 @@ const Booking = () => {
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 10 }}
                 >
-                  <h2 className="text-xl font-extrabold text-gray-900 mb-6 flex items-center gap-2">
-                    <FiCreditCard className="text-primary" /> Simulated Billing
+                  <h2 className="text-xl font-bold text-primary font-display mb-6 border-b border-primary/5 pb-3 flex items-center gap-2">
+                    <FiCreditCard className="text-secondary" /> Simulated Billing
                   </h2>
 
                   <form onSubmit={handlePaymentSubmit} className="flex flex-col gap-6">
-                    <div className="p-4 bg-primary/5 rounded-2xl flex gap-3 text-xs text-primary leading-relaxed">
-                      <FiInfo className="text-lg shrink-0 mt-0.5" />
+                    <div className="p-4 bg-primary/5 border border-primary/5 rounded-2xl flex gap-3 text-xs text-primary leading-relaxed">
+                      <FiInfo className="text-lg text-secondary shrink-0 mt-0.5" />
                       <span>This is a simulated booking interface. You can input any mock credit card details to complete your test checkout.</span>
                     </div>
 
-                    <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-4 text-xs font-semibold text-primary">
                       {/* Card Holder */}
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">Name on Card</label>
+                      <div className="flex flex-col gap-1.5 text-left">
+                        <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Name on Card</label>
                         <input
                           type="text"
                           required
                           placeholder="John Doe"
                           value={cardHolder}
                           onChange={(e) => setCardHolder(e.target.value)}
-                          className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-primary focus:bg-white"
+                          className="px-4 py-3 bg-gray-50 border border-primary/5 rounded-xl text-xs font-semibold focus:outline-none focus:border-secondary focus:bg-white transition-all"
                         />
                       </div>
 
                       {/* Card Number */}
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">Card Number</label>
+                      <div className="flex flex-col gap-1.5 text-left">
+                        <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Card Number</label>
                         <input
                           type="text"
                           required
                           placeholder="1234 5678 1234 5678"
                           value={cardNumber}
                           onChange={(e) => setCardNumber(e.target.value)}
-                          className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-primary focus:bg-white"
+                          className="px-4 py-3 bg-gray-50 border border-primary/5 rounded-xl text-xs font-semibold focus:outline-none focus:border-secondary focus:bg-white transition-all"
                         />
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
                         {/* Expiry */}
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">Expiry Date</label>
+                        <div className="flex flex-col gap-1.5 text-left">
+                          <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Expiry Date</label>
                           <input
                             type="text"
                             required
                             placeholder="MM/YY"
                             value={expiry}
                             onChange={(e) => setExpiry(e.target.value)}
-                            className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-primary focus:bg-white"
+                            className="px-4 py-3 bg-gray-50 border border-primary/5 rounded-xl text-xs font-semibold focus:outline-none focus:border-secondary focus:bg-white transition-all"
                           />
                         </div>
 
                         {/* CVV */}
-                        <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">CVV / CVC</label>
+                        <div className="flex flex-col gap-1.5 text-left">
+                          <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">CVV / CVC</label>
                           <input
                             type="password"
                             maxLength="3"
@@ -316,7 +316,7 @@ const Booking = () => {
                             placeholder="123"
                             value={cvv}
                             onChange={(e) => setCvv(e.target.value)}
-                            className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:outline-none focus:border-primary focus:bg-white"
+                            className="px-4 py-3 bg-gray-50 border border-primary/5 rounded-xl text-xs font-semibold focus:outline-none focus:border-secondary focus:bg-white transition-all"
                           />
                         </div>
                       </div>
@@ -324,20 +324,20 @@ const Booking = () => {
 
                     {errorMsg && <p className="text-xs text-red-500 font-bold">{errorMsg}</p>}
 
-                    <div className="flex gap-4">
+                    <div className="flex gap-4 mt-2">
                       <button
                         type="button"
                         onClick={() => setStep(1)}
-                        className="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs px-6 py-4 rounded-xl transition-all"
+                        className="bg-gray-100 hover:bg-gray-200 text-primary font-black text-xs uppercase tracking-wider px-6 py-4.5 rounded-xl transition-all cursor-pointer font-display"
                       >
                         Back
                       </button>
                       <button
                         type="submit"
                         disabled={submitting}
-                        className="flex-1 bg-secondary hover:bg-secondary-hover text-white text-xs font-bold py-4 rounded-xl transition-all shadow-md shadow-secondary/10 disabled:opacity-50"
+                        className="flex-1 bg-secondary hover:bg-amber-400 hover:text-primary text-white font-black text-xs uppercase tracking-wider py-4.5 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 font-display cursor-pointer"
                       >
-                        {submitting ? 'Authorizing Payment...' : `Authorize Charge ₹${tourPackage.price * travelersCount}`}
+                        {submitting ? 'Authorizing Payment...' : `Authorize Charge ₹${(tourPackage.price * travelersCount).toLocaleString('en-IN')}`}
                       </button>
                     </div>
                   </form>
@@ -353,37 +353,37 @@ const Booking = () => {
                   className="flex flex-col items-center text-center py-6"
                 >
                   <FiCheckCircle className="text-6xl text-secondary mb-4 animate-bounce" />
-                  <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">Booking Confirmed!</h2>
-                  <p className="text-sm text-gray-500 max-w-sm mt-2 mb-8 leading-relaxed">
+                  <h2 className="text-2xl font-black text-primary font-display tracking-tight mt-2">Booking Confirmed!</h2>
+                  <p className="text-sm text-primary/60 max-w-sm mt-3 mb-8 leading-relaxed font-light">
                     Thank you! Your payment was charged successfully and your tour tickets have been registered in our system.
                   </p>
 
-                  <div className="w-full border-t border-b border-gray-100 py-6 mb-8 flex flex-col gap-3.5 text-xs text-gray-700">
+                  <div className="w-full border-t border-b border-primary/5 py-6 mb-8 flex flex-col gap-3.5 text-xs text-primary/75">
                     <div className="flex justify-between">
-                      <span className="text-gray-400 font-medium">Transaction ID:</span>
-                      <span className="font-extrabold text-gray-900">{paymentResponse?.transactionId}</span>
+                      <span className="text-primary/45 font-black uppercase tracking-wider">Transaction ID:</span>
+                      <span className="font-extrabold text-primary font-display">{paymentResponse?.transactionId}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400 font-medium">Tour Package:</span>
-                      <span className="font-bold text-gray-900">{tourPackage.title}</span>
+                      <span className="text-primary/45 font-black uppercase tracking-wider">Tour Package:</span>
+                      <span className="font-extrabold text-primary">{tourPackage.title}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400 font-medium">Departure Date:</span>
-                      <span className="font-bold text-gray-900">{new Date(departureDate).toLocaleDateString()}</span>
+                      <span className="text-primary/45 font-black uppercase tracking-wider">Departure Date:</span>
+                      <span className="font-extrabold text-primary">{new Date(departureDate).toLocaleDateString()}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400 font-medium">Guests Count:</span>
-                      <span className="font-bold text-gray-900">{travelersCount} Travelers</span>
+                      <span className="text-primary/45 font-black uppercase tracking-wider">Guests Count:</span>
+                      <span className="font-extrabold text-primary">{travelersCount} Travelers</span>
                     </div>
-                    <div className="flex justify-between pt-2.5 border-t border-gray-50">
-                      <span className="text-gray-400 font-medium">Total Price:</span>
-                      <span className="text-base text-primary font-extrabold">₹{tourPackage.price * travelersCount} INR</span>
+                    <div className="flex justify-between pt-3 border-t border-primary/5">
+                      <span className="text-primary/45 font-black uppercase tracking-wider">Total Price:</span>
+                      <span className="text-base text-primary font-black font-display">₹{(tourPackage.price * travelersCount).toLocaleString('en-IN')} INR</span>
                     </div>
                   </div>
 
                   <button
                     onClick={() => navigate('/dashboard')}
-                    className="w-full bg-primary hover:bg-primary-hover text-white text-xs font-bold py-4 rounded-xl transition-all shadow-md shadow-primary/10"
+                    className="w-full bg-primary hover:bg-secondary hover:text-primary text-white font-black text-xs uppercase tracking-wider py-4.5 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg font-display cursor-pointer"
                   >
                     Go to Booking History
                   </button>
@@ -395,41 +395,41 @@ const Booking = () => {
 
           {/* Checkout Right Side: Booking Summary */}
           {step < 3 && (
-            <div className="lg:col-span-1 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-4 text-left">
-              <h3 className="font-extrabold text-gray-900 text-sm border-b border-gray-50 pb-3">Booking Summary</h3>
+            <div className="lg:col-span-1 bg-white p-6 rounded-[24px] border border-primary/5 shadow-luxury flex flex-col gap-4 text-left">
+              <h3 className="font-extrabold text-primary text-sm border-b border-primary/5 pb-3 font-display">Booking Summary</h3>
               
               <div className="flex items-center gap-3">
                 <img
                   src={tourPackage.gallery?.[0]}
                   alt="Tour"
-                  className="w-16 h-16 rounded-xl object-cover"
+                  className="w-16 h-16 rounded-xl object-cover border border-primary/5"
                 />
                 <div>
-                  <h4 className="text-xs font-bold text-gray-900 line-clamp-1">{tourPackage.title}</h4>
-                  <span className="text-[10px] text-gray-400 font-medium flex items-center gap-1.5 mt-1">
-                    <FiMapPin /> {tourPackage.destination?.name}
+                  <h4 className="text-xs font-extrabold text-primary line-clamp-1 font-display">{tourPackage.title}</h4>
+                  <span className="text-[10px] text-primary/45 font-bold flex items-center gap-1 mt-1 uppercase tracking-wide">
+                    <FiMapPin className="text-secondary" /> {tourPackage.destination?.name}
                   </span>
                 </div>
               </div>
 
-              <div className="border-t border-gray-50 pt-4 flex flex-col gap-2.5 text-[11px] text-gray-500 font-medium">
+              <div className="border-t border-primary/5 pt-4 flex flex-col gap-2.5 text-[11px] text-primary/55 font-bold uppercase tracking-wider font-display">
                 <div className="flex justify-between">
-                  <span>Departure Date:</span>
-                  <span className="text-gray-800 font-bold">{new Date(departureDate).toLocaleDateString()}</span>
+                  <span>Departure Date</span>
+                  <span className="text-primary font-extrabold normal-case">{new Date(departureDate).toLocaleDateString()}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Price Per Guest:</span>
-                  <span className="text-gray-800 font-bold">₹{tourPackage.price}</span>
+                  <span>Price Per Guest</span>
+                  <span className="text-primary font-extrabold normal-case">₹{tourPackage.price?.toLocaleString('en-IN')}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Guests:</span>
-                  <span className="text-gray-800 font-bold">{travelersCount}</span>
+                  <span>Guests</span>
+                  <span className="text-primary font-extrabold normal-case">{travelersCount}</span>
                 </div>
               </div>
 
-              <div className="border-t border-gray-50 pt-4 flex justify-between items-center text-xs font-bold text-gray-800">
-                <span>Grand Total:</span>
-                <span className="text-base text-primary font-extrabold">₹{tourPackage.price * travelersCount}</span>
+              <div className="border-t border-primary/5 pt-4 flex justify-between items-center text-xs font-black text-primary font-display uppercase tracking-wider">
+                <span>Grand Total</span>
+                <span className="text-lg text-primary font-black font-display normal-case">₹{(tourPackage.price * travelersCount).toLocaleString('en-IN')}</span>
               </div>
             </div>
           )}

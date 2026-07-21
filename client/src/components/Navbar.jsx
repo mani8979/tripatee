@@ -43,35 +43,39 @@ const Navbar = () => {
     { name: 'Contact', path: '/contact' },
   ];
 
+  const isHome = location.pathname === '/';
+
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         isScrolled
-          ? 'glass-nav py-4 shadow-sm'
+          ? 'glass-nav py-4 shadow-luxury'
           : 'bg-transparent py-6'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 flex justify-between items-center">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <span className="text-2xl font-extrabold tracking-tight text-primary font-sans flex items-center">
-            Flashmob<span className="text-secondary ml-1.5">Travels</span>
+        <Link to="/" className="flex items-center gap-2 group">
+          <span className={`text-2xl font-extrabold tracking-tight font-display transition-colors duration-300 ${
+            !isScrolled && isHome ? 'text-white' : 'text-primary'
+          }`}>
+            Flashmob<span className="text-secondary ml-1 group-hover:brightness-110 transition-all">Travels</span>
           </span>
         </Link>
 
         {/* Desktop Navigation Links */}
-        <div className="hidden lg:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-10">
           {navLinks.map((link) => (
             <NavLink
               key={link.name}
               to={link.path}
               className={({ isActive }) =>
-                `text-sm font-medium tracking-wide transition-colors ${
+                `text-[15px] font-medium tracking-wide transition-colors duration-300 nav-link-underline py-1.5 ${
                   isActive
-                    ? 'text-primary'
-                    : isScrolled
-                    ? 'text-gray-700 hover:text-primary'
-                    : 'text-gray-900 lg:text-white/95 hover:text-primary'
+                    ? 'text-secondary font-semibold'
+                    : !isScrolled && isHome
+                    ? 'text-white/90 hover:text-secondary'
+                    : 'text-primary/80 hover:text-secondary'
                 }`
               }
             >
@@ -81,45 +85,49 @@ const Navbar = () => {
         </div>
 
         {/* Desktop Auth Section */}
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-6">
           {user ? (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-5">
               {user.role === 'admin' ? (
                 <Link
                   to="/admin"
-                  className="flex items-center gap-1 text-sm font-semibold px-4 py-2 border border-primary text-primary hover:bg-primary hover:text-white rounded-full transition-all"
+                  className="flex items-center gap-2 text-sm font-semibold px-6 py-2.5 bg-primary text-white border border-transparent hover:bg-primary-hover hover:border-secondary hover:text-secondary rounded-full transition-all duration-300 shadow-sm"
                 >
-                  <FiGrid /> Admin Panel
+                  <FiGrid className="text-base" /> Admin Panel
                 </Link>
               ) : (
                 <Link
                   to="/dashboard"
-                  className="flex items-center gap-1 text-sm font-semibold px-4 py-2 border border-primary text-primary hover:bg-primary hover:text-white rounded-full transition-all"
+                  className="flex items-center gap-2 text-sm font-semibold px-6 py-2.5 bg-primary text-white border border-transparent hover:bg-primary-hover hover:border-secondary hover:text-secondary rounded-full transition-all duration-300 shadow-sm"
                 >
-                  <FiUser /> My Account
+                  <FiUser className="text-base" /> My Account
                 </Link>
               )}
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-1 text-sm font-semibold text-gray-600 hover:text-red-500 transition-colors"
+                className={`flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-300 ${
+                  !isScrolled && isHome 
+                    ? 'border-white/20 text-white/80 hover:bg-white/10 hover:text-secondary' 
+                    : 'border-primary/10 text-primary/70 hover:bg-primary/5 hover:text-red-500'
+                }`}
                 title="Log Out"
               >
                 <FiLogOut className="text-lg" />
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
               <Link
                 to="/login"
-                className={`text-sm font-semibold transition-colors ${
-                  isScrolled ? 'text-gray-700 hover:text-primary' : 'text-gray-900 lg:text-white hover:text-primary'
+                className={`text-[15px] font-semibold transition-colors duration-300 hover:text-secondary ${
+                  !isScrolled && isHome ? 'text-white/95' : 'text-primary/95'
                 }`}
               >
                 Login
               </Link>
               <Link
                 to="/signup"
-                className="bg-primary hover:bg-primary-hover text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-all shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30"
+                className="bg-primary hover:bg-primary-hover text-white text-[15px] font-semibold px-7 py-3 rounded-full transition-all duration-300 shadow-md shadow-primary/10 border border-transparent hover:border-secondary hover:text-secondary"
               >
                 Sign Up
               </Link>
@@ -132,21 +140,25 @@ const Navbar = () => {
           {user && (
             <Link
               to={user.role === 'admin' ? '/admin' : '/dashboard'}
-              className={`${
-                !isScrolled && location.pathname === '/' ? 'text-white' : 'text-gray-700'
-              } hover:text-primary transition-colors`}
+              className={`w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-300 ${
+                !isScrolled && isHome 
+                  ? 'border-white/20 text-white' 
+                  : 'border-primary/10 text-primary'
+              }`}
               title="Dashboard"
             >
-              <FiUser className="text-xl" />
+              <FiUser className="text-lg" />
             </Link>
           )}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`${
-              !isScrolled && location.pathname === '/' ? 'text-white' : 'text-gray-700'
-            } hover:text-primary transition-colors focus:outline-none`}
+            className={`w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-300 focus:outline-none ${
+              !isScrolled && isHome 
+                ? 'border-white/20 text-white hover:bg-white/10' 
+                : 'border-primary/10 text-primary hover:bg-primary/5'
+            }`}
           >
-            {isOpen ? <FiX className="text-2xl" /> : <FiMenu className="text-2xl" />}
+            {isOpen ? <FiX className="text-xl" /> : <FiMenu className="text-xl" />}
           </button>
         </div>
       </div>
@@ -155,19 +167,19 @@ const Navbar = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -15 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0, y: -15 }}
             transition={{ duration: 0.2 }}
-            className="absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 flex flex-col py-6 px-6 gap-4 z-40 lg:hidden"
+            className="absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 flex flex-col py-6 px-6 gap-3 z-40 lg:hidden"
           >
             {navLinks.map((link) => (
               <NavLink
                 key={link.name}
                 to={link.path}
                 className={({ isActive }) =>
-                  `text-base font-semibold py-2 transition-colors border-b border-gray-50 ${
-                    isActive ? 'text-primary' : 'text-gray-700 hover:text-primary'
+                  `text-base font-semibold py-2.5 px-4 rounded-xl transition-colors ${
+                    isActive ? 'text-secondary bg-primary/5' : 'text-primary hover:bg-gray-50'
                   }`
                 }
               >
@@ -176,31 +188,31 @@ const Navbar = () => {
             ))}
 
             {user ? (
-              <div className="flex flex-col gap-4 mt-2">
+              <div className="flex flex-col gap-3 mt-3 pt-3 border-t border-gray-100">
                 <Link
                   to={user.role === 'admin' ? '/admin' : '/dashboard'}
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-800 text-center font-semibold py-3 rounded-full transition-all"
+                  className="bg-primary hover:bg-primary-hover text-white text-center font-semibold py-3.5 rounded-full transition-all"
                 >
-                  Go to Dashboard
+                  Dashboard
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="bg-red-50 hover:bg-red-100 text-red-600 text-center font-semibold py-3 rounded-full transition-all flex items-center justify-center gap-2"
+                  className="bg-red-50 hover:bg-red-100 text-red-600 text-center font-semibold py-3.5 rounded-full transition-all flex items-center justify-center gap-2"
                 >
                   <FiLogOut /> Log Out
                 </button>
               </div>
             ) : (
-              <div className="flex flex-col gap-4 mt-2">
+              <div className="flex flex-col gap-3 mt-3 pt-3 border-t border-gray-100">
                 <Link
                   to="/login"
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-800 text-center font-semibold py-3 rounded-full transition-all"
+                  className="bg-gray-100 hover:bg-gray-200 text-primary text-center font-semibold py-3.5 rounded-full transition-all"
                 >
                   Login
                 </Link>
                 <Link
                   to="/signup"
-                  className="bg-primary hover:bg-primary-hover text-white text-center font-semibold py-3 rounded-full transition-all shadow-md shadow-primary/20"
+                  className="bg-primary hover:bg-primary-hover text-white text-center font-semibold py-3.5 rounded-full transition-all shadow-md shadow-primary/20"
                 >
                   Sign Up
                 </Link>

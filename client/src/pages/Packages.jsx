@@ -98,14 +98,14 @@ const Packages = () => {
   };
 
   return (
-    <div className="min-h-screen pt-28 pb-20 bg-gray-50/50">
-      <div className="max-w-7xl mx-auto px-6">
+    <div className="min-h-screen pt-32 pb-24 bg-warm-white">
+      <div className="max-w-7xl mx-auto px-6 md:px-8">
         {/* Header Title */}
-        <div className="mb-10 text-left">
-          <span className="text-primary text-xs font-extrabold uppercase tracking-widest flex items-center gap-1">
-            <FiSliders /> Luxury Escapes
+        <div className="mb-14 text-left">
+          <span className="text-secondary text-xs font-black uppercase tracking-[0.2em] font-display flex items-center gap-1.5">
+            <FiSliders className="text-sm" /> Bespoke Collections
           </span>
-          <h1 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight mt-1">
+          <h1 className="text-4xl md:text-5xl font-black text-primary tracking-tight font-display mt-2 leading-tight">
             Tour Packages
           </h1>
         </div>
@@ -113,15 +113,18 @@ const Packages = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
           {/* 1. FILTER CONTROLS SIDEBAR */}
           <div className="lg:col-span-1">
-            <form onSubmit={handleApplyFilters} className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-6 text-left">
-              <div className="flex justify-between items-center pb-4 border-b border-gray-100">
-                <h3 className="font-extrabold text-gray-900 text-lg flex items-center gap-2">
-                  <FiFilter className="text-primary" /> Filters
+            <form 
+              onSubmit={handleApplyFilters} 
+              className="bg-white p-8 rounded-[24px] border border-primary/5 shadow-luxury flex flex-col gap-6 text-left"
+            >
+              <div className="flex justify-between items-center pb-4 border-b border-primary/5">
+                <h3 className="font-extrabold text-primary text-base font-display flex items-center gap-2">
+                  <FiFilter className="text-secondary" /> Filter Options
                 </h3>
                 <button
                   type="button"
                   onClick={handleResetFilters}
-                  className="text-xs font-semibold text-gray-400 hover:text-red-500 transition-colors"
+                  className="text-xs font-bold text-primary/40 hover:text-red-500 transition-colors"
                 >
                   Clear All
                 </button>
@@ -129,72 +132,78 @@ const Packages = () => {
 
               {/* Keyword Search */}
               <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Search Keywords</label>
-                <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5">
-                  <FiSearch className="text-gray-400 text-sm" />
+                <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Search Keywords</label>
+                <div className="flex items-center gap-2.5 bg-gray-50/50 hover:bg-gray-50 border border-primary/5 rounded-xl px-4 py-3 transition-colors">
+                  <FiSearch className="text-secondary text-sm shrink-0" />
                   <input
                     type="text"
-                    placeholder="e.g. Paris, cruise..."
+                    placeholder="Paris, cruises, hiking..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="bg-transparent border-none outline-none text-xs w-full text-gray-700 font-medium"
+                    className="bg-transparent border-none outline-none text-xs w-full text-primary font-semibold placeholder-primary/30"
                   />
                 </div>
               </div>
 
               {/* Destination Dropdown */}
               <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Destination</label>
-                <select
-                  value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
-                  className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-gray-700 font-medium w-full focus:outline-none"
-                >
-                  <option value="">Any Destination</option>
-                  {destinations.map((d) => (
-                    <option key={d._id} value={d._id}>
-                      {d.name}, {d.country}
-                    </option>
-                  ))}
-                </select>
+                <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Destination</label>
+                <div className="bg-gray-50/50 border border-primary/5 rounded-xl px-2 py-1">
+                  <select
+                    value={destination}
+                    onChange={(e) => setDestination(e.target.value)}
+                    className="bg-transparent border-none outline-none text-xs text-primary font-semibold w-full py-2 cursor-pointer focus:ring-0"
+                  >
+                    <option value="">Any Destination</option>
+                    {destinations.map((d) => (
+                      <option key={d._id} value={d._id}>
+                        {d.name}, {d.country}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
               {/* Max Budget Slider */}
               <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-center text-xs font-bold text-gray-600 uppercase tracking-wider">
+                <div className="flex justify-between items-center text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">
                   <span>Max Budget</span>
-                  <span className="text-primary font-extrabold">{maxPrice ? `₹${maxPrice}` : 'Unlimited'}</span>
+                  <span className="text-secondary font-black">
+                    {maxPrice ? `₹${Number(maxPrice).toLocaleString('en-IN')}` : 'Unlimited'}
+                  </span>
                 </div>
                 <input
                   type="range"
                   min="500"
-                  max="5000"
-                  step="100"
-                  value={maxPrice || '5000'}
+                  max="1000000"
+                  step="500"
+                  value={maxPrice || '1000000'}
                   onChange={(e) => setMaxPrice(e.target.value)}
-                  className="w-full accent-primary cursor-pointer h-1.5 bg-gray-200 rounded-lg appearance-none"
+                  className="w-full accent-secondary cursor-pointer h-1 bg-primary/5 rounded-lg appearance-none"
                 />
               </div>
 
               {/* Sorting */}
               <div className="flex flex-col gap-2">
-                <label className="text-xs font-bold text-gray-600 uppercase tracking-wider">Sort By</label>
-                <select
-                  value={sort}
-                  onChange={(e) => setSort(e.target.value)}
-                  className="bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-gray-700 font-medium w-full focus:outline-none"
-                >
-                  <option value="">Newest Added</option>
-                  <option value="priceAsc">Price: Low to High</option>
-                  <option value="priceDesc">Price: High to Low</option>
-                  <option value="ratingDesc">Highest Rated</option>
-                </select>
+                <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Sort By</label>
+                <div className="bg-gray-50/50 border border-primary/5 rounded-xl px-2 py-1">
+                  <select
+                    value={sort}
+                    onChange={(e) => setSort(e.target.value)}
+                    className="bg-transparent border-none outline-none text-xs text-primary font-semibold w-full py-2 cursor-pointer focus:ring-0"
+                  >
+                    <option value="">Newest Added</option>
+                    <option value="priceAsc">Price: Low to High</option>
+                    <option value="priceDesc">Price: High to Low</option>
+                    <option value="ratingDesc">Highest Rated</option>
+                  </select>
+                </div>
               </div>
 
               {/* Submit Buttons */}
               <button
                 type="submit"
-                className="w-full bg-primary hover:bg-primary-hover text-white text-xs font-bold py-3.5 rounded-xl transition-all shadow-md shadow-primary/10"
+                className="w-full bg-primary hover:bg-secondary hover:text-primary text-white font-black text-xs uppercase tracking-wider py-4 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg mt-2 font-display"
               >
                 Apply Filters
               </button>
@@ -220,55 +229,56 @@ const Packages = () => {
                       key={pkg._id}
                       initial={{ opacity: 0, y: 15 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                      className="bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg transition-all group flex flex-col h-[480px]"
+                      transition={{ duration: 0.4, delay: index * 0.05 }}
+                      className="bg-white rounded-[24px] overflow-hidden border border-primary/5 shadow-luxury hover:shadow-luxury-hover transition-all duration-300 group flex flex-col h-[520px] text-left"
                     >
                       {/* Image Thumbnail */}
                       <div className="relative h-56 overflow-hidden shrink-0">
                         <img
                           src={pkg.gallery?.[0] || 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=600&auto=format&fit=crop'}
                           alt={pkg.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 brightness-95"
                         />
-                        <div className="absolute top-4 left-4 bg-primary text-white text-xxs font-extrabold uppercase px-2.5 py-1 rounded-full shadow">
+                        <div className="absolute top-4 left-4 bg-primary/95 text-secondary text-[10px] font-black uppercase tracking-wider px-3.5 py-1.5 rounded-full shadow backdrop-blur-sm">
                           {pkg.duration}
                         </div>
                         {/* Bookmark Button */}
                         <button
                           type="button"
                           onClick={() => toggleSaveTrip(pkg._id)}
-                          className={`absolute top-4 right-4 w-8.5 h-8.5 rounded-full flex items-center justify-center shadow-lg transition-all bg-white hover:scale-105 ${
+                          className={`absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center shadow bg-white hover:scale-105 transition-all duration-300 ${
                             user?.savedTrips?.some((t) => (t._id || t) === pkg._id)
                               ? 'text-red-500'
-                              : 'text-gray-400 hover:text-red-500'
+                              : 'text-primary/30 hover:text-red-500'
                           }`}
                         >
-                          <FiStar className="fill-current text-xs" />
+                          <FiStar className="fill-current text-sm" />
                         </button>
                       </div>
 
                       {/* Info Details */}
-                      <div className="p-6 flex flex-col justify-between flex-1 text-left">
-                        <div className="flex flex-col gap-2">
-                          <div className="flex items-center gap-1 text-xxs font-semibold text-secondary">
-                            <FiMapPin /> {pkg.destination?.name || 'Global'}
+                      <div className="p-6 flex flex-col justify-between flex-1">
+                        <div className="flex flex-col gap-2.5">
+                          <div className="flex items-center gap-1 text-[11px] font-bold text-secondary uppercase tracking-widest font-display">
+                            <FiMapPin className="text-[12px]" /> 
+                            <span>{pkg.destination?.name || 'Global'}</span>
                           </div>
-                          <h3 className="text-lg font-extrabold text-gray-900 group-hover:text-primary transition-colors line-clamp-1">
+                          <h3 className="text-lg font-bold text-primary group-hover:text-secondary transition-colors line-clamp-1 font-display">
                             {pkg.title}
                           </h3>
-                          <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed mt-0.5">
+                          <p className="text-xs text-primary/60 line-clamp-2 leading-relaxed font-light mt-0.5">
                             {pkg.description}
                           </p>
                         </div>
 
-                        <div className="flex justify-between items-end border-t border-gray-50 pt-4 mt-4">
+                        <div className="flex justify-between items-end border-t border-primary/5 pt-5 mt-5">
                           <div className="flex flex-col">
-                            <span className="text-xxs text-gray-400 font-medium">Starting at</span>
-                            <span className="text-xl font-extrabold text-primary">₹{pkg.price}</span>
+                            <span className="text-[10px] text-primary/40 font-semibold uppercase tracking-wider">Starting at</span>
+                            <span className="text-xl font-black text-primary leading-none">₹{pkg.price.toLocaleString('en-IN')}</span>
                           </div>
                           <Link
                             to={`/packages/${pkg._id}`}
-                            className="bg-secondary hover:bg-secondary-hover text-white text-xs font-bold px-5 py-2.5 rounded-full transition-all"
+                            className="bg-primary hover:bg-secondary hover:text-primary text-white text-[11px] font-black uppercase tracking-wider px-6 py-2.5 rounded-full transition-all duration-300 font-display"
                           >
                             Details
                           </Link>
@@ -280,17 +290,17 @@ const Packages = () => {
 
                 {/* Pagination Controls */}
                 {totalPages > 1 && (
-                  <div className="flex justify-center items-center gap-2 mt-8">
+                  <div className="flex justify-center items-center gap-2 mt-12">
                     {Array.from({ length: totalPages }).map((_, idx) => {
                       const pageNum = idx + 1;
                       return (
                         <button
                           key={pageNum}
                           onClick={() => setCurrentPage(pageNum)}
-                          className={`w-10 h-10 rounded-full text-xs font-bold transition-all ${
+                          className={`w-11 h-11 rounded-full text-xs font-black transition-all duration-300 flex items-center justify-center font-display ${
                             currentPage === pageNum
-                              ? 'bg-primary text-white shadow-md shadow-primary/10'
-                              : 'bg-white border border-gray-200 text-gray-600 hover:border-primary hover:text-primary'
+                              ? 'bg-primary text-white shadow-md'
+                              : 'bg-white border border-primary/5 text-primary/65 hover:border-secondary hover:text-secondary shadow-sm hover:scale-105'
                           }`}
                         >
                           {pageNum}

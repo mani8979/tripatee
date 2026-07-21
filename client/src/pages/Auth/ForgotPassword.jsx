@@ -49,24 +49,25 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50/50 pt-28 pb-16 px-6 relative overflow-hidden">
-      <div className="absolute w-72 h-72 bg-primary/5 rounded-full blur-3xl top-1/4 left-1/4"></div>
-      <div className="absolute w-72 h-72 bg-secondary/5 rounded-full blur-3xl bottom-1/4 right-1/4"></div>
+    <div className="min-h-screen flex items-center justify-center bg-warm-white pt-32 pb-20 px-6 relative overflow-hidden">
+      {/* Decorative Blur BG elements */}
+      <div className="absolute w-80 h-80 bg-secondary/5 rounded-full blur-3xl top-1/4 left-1/4"></div>
+      <div className="absolute w-80 h-80 bg-primary/5 rounded-full blur-3xl bottom-1/4 right-1/4"></div>
 
-      <div className="w-full max-w-md bg-white border border-gray-100 p-8 rounded-3xl shadow-xl text-left relative z-10">
-        <div className="text-center mb-8 flex flex-col gap-1.5">
-          <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">Recover Password</h2>
-          <p className="text-xs text-gray-400 font-medium">Reset your credential keys using email verification</p>
+      <div className="w-full max-w-md bg-white border border-primary/5 p-10 rounded-[28px] shadow-luxury text-left relative z-10">
+        <div className="text-center mb-8 flex flex-col gap-2">
+          <h2 className="text-2xl font-extrabold text-primary font-display tracking-tight">Recover Password</h2>
+          <p className="text-xs text-primary/50 font-bold uppercase tracking-wider">Reset your credentials using email verification</p>
         </div>
 
         {errorMsg && (
-          <div className="p-3.5 bg-red-50 text-red-500 rounded-xl text-xs font-semibold mb-6">
+          <div className="p-4 bg-red-50 text-red-600 border border-red-100 rounded-xl text-xs font-semibold mb-6 leading-relaxed">
             {errorMsg}
           </div>
         )}
 
         {successMsg && (
-          <div className="p-3.5 bg-emerald-50 text-emerald-600 rounded-xl text-xs font-semibold mb-6">
+          <div className="p-4 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-xl text-xs font-semibold mb-6 leading-relaxed">
             {successMsg}
           </div>
         )}
@@ -75,16 +76,16 @@ const ForgotPassword = () => {
           <form onSubmit={handleRequestCode} className="flex flex-col gap-5">
             {/* Email Input */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">Registered Email Address</label>
-              <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus-within:border-primary focus-within:bg-white transition-all">
-                <FiMail className="text-gray-400 text-sm" />
+              <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">Registered Email Address</label>
+              <div className="flex items-center gap-2.5 bg-gray-50 border border-primary/5 rounded-xl px-4 py-3 focus-within:border-secondary focus-within:bg-white transition-all">
+                <FiMail className="text-secondary text-sm shrink-0" />
                 <input
                   type="email"
                   required
                   placeholder="name@domain.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-transparent border-none outline-none text-xs w-full text-gray-700 font-medium"
+                  className="bg-transparent border-none outline-none text-xs w-full text-primary font-semibold placeholder-primary/30"
                 />
               </div>
             </div>
@@ -92,7 +93,7 @@ const ForgotPassword = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary hover:bg-primary-hover text-white text-xs font-bold py-3.5 rounded-xl transition-all shadow-md shadow-primary/10 disabled:opacity-50 mt-2"
+              className="w-full bg-primary hover:bg-secondary hover:text-primary text-white font-black text-xs uppercase tracking-wider py-4.5 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 mt-2 font-display cursor-pointer"
             >
               {loading ? 'Sending code...' : 'Send Recovery Code'}
             </button>
@@ -101,9 +102,9 @@ const ForgotPassword = () => {
           <form onSubmit={handleResetPassword} className="flex flex-col gap-5">
             {/* OTP code */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">6-Digit Recovery OTP</label>
-              <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus-within:border-primary focus-within:bg-white transition-all">
-                <FiShield className="text-gray-400 text-sm" />
+              <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">6-Digit Recovery OTP</label>
+              <div className="flex items-center gap-2.5 bg-gray-50 border border-primary/5 rounded-xl px-4 py-3 focus-within:border-secondary focus-within:bg-white transition-all">
+                <FiShield className="text-secondary text-sm shrink-0" />
                 <input
                   type="text"
                   maxLength="6"
@@ -111,23 +112,23 @@ const ForgotPassword = () => {
                   placeholder="e.g. 123456"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
-                  className="bg-transparent border-none outline-none text-xs w-full text-gray-700 font-medium"
+                  className="bg-transparent border-none outline-none text-xs w-full text-primary font-semibold placeholder-primary/30"
                 />
               </div>
             </div>
 
             {/* New Password */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">New Password</label>
-              <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 focus-within:border-primary focus-within:bg-white transition-all">
-                <FiLock className="text-gray-400 text-sm" />
+              <label className="text-[10px] font-black text-primary/45 uppercase tracking-widest pl-0.5">New Password</label>
+              <div className="flex items-center gap-2.5 bg-gray-50 border border-primary/5 rounded-xl px-4 py-3 focus-within:border-secondary focus-within:bg-white transition-all">
+                <FiLock className="text-secondary text-sm shrink-0" />
                 <input
                   type="password"
                   required
                   placeholder="Minimum 6 characters"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="bg-transparent border-none outline-none text-xs w-full text-gray-700 font-medium"
+                  className="bg-transparent border-none outline-none text-xs w-full text-primary font-semibold placeholder-primary/30"
                 />
               </div>
             </div>
@@ -135,15 +136,15 @@ const ForgotPassword = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-secondary hover:bg-secondary-hover text-white text-xs font-bold py-3.5 rounded-xl transition-all shadow-md shadow-secondary/10 disabled:opacity-50 mt-2"
+              className="w-full bg-secondary hover:bg-amber-400 hover:text-primary text-white font-black text-xs uppercase tracking-wider py-4.5 rounded-xl transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 mt-2 font-display cursor-pointer"
             >
               {loading ? 'Resetting password...' : 'Complete Password Reset'}
             </button>
           </form>
         )}
 
-        <div className="text-center text-xs text-gray-400 font-medium mt-6">
-          <Link to="/login" className="text-primary font-bold hover:underline">
+        <div className="text-center text-xs text-primary/55 font-semibold mt-8">
+          <Link to="/login" className="text-secondary hover:text-primary transition-colors">
             Back to Login
           </Link>
         </div>
