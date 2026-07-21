@@ -8,6 +8,7 @@ import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SplashScreen from './components/SplashScreen';
+import ScrollToTop from './components/ScrollToTop';
 
 // Public Pages
 import Home from './pages/Home';
@@ -39,6 +40,7 @@ const App = () => {
     <>
       {showSplash && <SplashScreen onFinish={() => setShowSplash(false)} />}
     <Router>
+      <ScrollToTop />
       <AuthProvider>
         <div className="flex flex-col min-h-screen">
           <Navbar />
