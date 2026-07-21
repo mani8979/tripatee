@@ -138,7 +138,7 @@ const Home = () => {
   return (
     <div className="flex flex-col min-h-screen bg-warm-white">
       {/* 1. HERO SECTION */}
-      <section className="relative h-[95vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[95vh] flex flex-col justify-center items-center overflow-hidden pt-36 pb-20">
         {/* Background Image Overlay */}
         <div className="absolute inset-0 z-0">
           <img
@@ -150,7 +150,7 @@ const Home = () => {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white flex flex-col items-center gap-6 mt-16">
+        <div className="relative z-10 max-w-5xl mx-auto px-6 text-center text-white flex flex-col items-center gap-6">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
