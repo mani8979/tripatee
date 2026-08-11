@@ -24,7 +24,7 @@
       "dest": "server/uploads/$1"
     },
     {
-      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf|eot|html))",
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf|eot|html|txt|xml))",
       "dest": "client/$1"
     },
     {
