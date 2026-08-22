@@ -4,7 +4,7 @@ Welcome to **Tripatee**, a complete, production-ready travel booking platform bu
 
 ![Tripatee](https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=1600&auto=format&fit=crop)
 
-### 🔗 Live Preview: [https://tripatee.vercel.app/](https://tripatee.vercel.app/)
+### 🔗 Live Preview: [https://love-melt.vercel.app/](https://love-melt.vercel.app/)
 
 ---
 
