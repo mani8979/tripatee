@@ -142,7 +142,7 @@ const Home = () => {
         {/* Background Image Overlay */}
         <div className="absolute inset-0 z-0">
           <img
-            src="/araku-view-point-clouds-passing.jpg"
+            src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=1600&auto=format&fit=crop"
             alt="Hero Background"
             className="w-full h-full object-cover brightness-[0.55] scale-100 transition-transform duration-[10000ms] hover:scale-105"
           />
